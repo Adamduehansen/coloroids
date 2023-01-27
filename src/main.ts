@@ -16,6 +16,12 @@ const kctx = kaboom({
 
 type Player = GameObj<RectComp | ColorComp | PosComp | OriginComp>;
 
+function isWhiteColor(colorObj: GameObj<ColorComp>): boolean {
+  console.log(colorObj.color.toString());
+
+  return colorObj.color.toString() === kctx.WHITE.toString();
+}
+
 function gameScene(): void {
   const player: Player = kctx.add([
     kctx.rect(16, 16),
@@ -26,7 +32,14 @@ function gameScene(): void {
 
   function makeAddPlayerColorHandler(color: Color): () => void {
     return function () {
+      if (isWhiteColor(player)) {
+        player.color = color;
+      }
+
       const { r, g, b } = color;
+      player.color.r += r;
+      player.color.g += g;
+      player.color.b += b;
     };
   }
 
