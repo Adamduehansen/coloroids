@@ -21,6 +21,25 @@ function getColorChannels(color: Color): ColorChannels {
   };
 }
 
+function controlPlayerSpeed(player: Player): () => void {
+  const speedDelta = 0.05;
+
+  return () => {
+    if (kctx.isKeyDown('up')) {
+      player.ySpeed -= speedDelta;
+    }
+    if (kctx.isKeyDown('right')) {
+      player.xSpeed += speedDelta;
+    }
+    if (kctx.isKeyDown('down')) {
+      player.ySpeed += speedDelta;
+    }
+    if (kctx.isKeyDown('left')) {
+      player.xSpeed -= speedDelta;
+    }
+  };
+}
+
 function gameScene(): void {
   const player: Player = kctx.add([
     kctx.rect(16, 16),
@@ -48,20 +67,7 @@ function gameScene(): void {
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
 
-  onUpdate(() => {
-    if (kctx.isKeyDown('up')) {
-      player.ySpeed -= 0.05;
-    }
-    if (kctx.isKeyDown('right')) {
-      player.xSpeed += 0.05;
-    }
-    if (kctx.isKeyDown('down')) {
-      player.ySpeed += 0.05;
-    }
-    if (kctx.isKeyDown('left')) {
-      player.xSpeed -= 0.05;
-    }
-  });
+  onUpdate(controlPlayerSpeed(player));
 }
 
 export default gameScene;
