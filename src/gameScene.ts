@@ -40,6 +40,19 @@ function controlPlayerSpeed(player: Player): () => void {
   };
 }
 
+const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+// const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
+
+function spawnAsteroid() {
+  const colorIndex = Math.floor(kctx.rand(0, LEVEL_1_ASTEROID_COLORS.length));
+  kctx.add([
+    kctx.rect(16, 16),
+    kctx.color(LEVEL_1_ASTEROID_COLORS[colorIndex]),
+    kctx.pos(200, 200),
+    kctx.origin('center'),
+  ]);
+}
+
 function checkPlayerBoundsCollision(player: Player): () => void {
   return () => {
     if (player.pos.x < 0) {
@@ -84,8 +97,10 @@ function gameScene(): void {
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
 
-  onUpdate(controlPlayerSpeed(player));
-  onUpdate(checkPlayerBoundsCollision(player));
+  kctx.loop(2, spawnAsteroid);
+
+  kctx.onUpdate(controlPlayerSpeed(player));
+  kctx.onUpdate(checkPlayerBoundsCollision(player));
 }
 
 export default gameScene;
