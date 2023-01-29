@@ -7,6 +7,7 @@ import kaboom, {
   PosComp,
   OriginComp,
 } from 'kaboom';
+import combineColors, { ColorChannels } from './combineColors';
 
 const kctx = kaboom({
   width: 600,
@@ -16,10 +17,13 @@ const kctx = kaboom({
 
 type Player = GameObj<RectComp | ColorComp | PosComp | OriginComp>;
 
-function isWhiteColor(colorObj: GameObj<ColorComp>): boolean {
-  console.log(colorObj.color.toString());
-
-  return colorObj.color.toString() === kctx.WHITE.toString();
+function getColorChannels(color: Color): ColorChannels {
+  const { r, g, b } = color;
+  return {
+    r: r,
+    g: g,
+    b: b,
+  };
 }
 
 function gameScene(): void {
@@ -31,21 +35,21 @@ function gameScene(): void {
   ]);
 
   function makeAddPlayerColorHandler(color: Color): () => void {
-    return function () {
-      if (isWhiteColor(player)) {
-        player.color = color;
-      }
-
-      const { r, g, b } = color;
-      player.color.r += r;
-      player.color.g += g;
-      player.color.b += b;
+    return function (): void {
+      const { r, g, b } = combineColors(
+        getColorChannels(player.color),
+        getColorChannels(color)
+      );
+      player.color.r = r;
+      player.color.g = g;
+      player.color.b = b;
     };
   }
 
   kctx.onKeyPress('r', makeAddPlayerColorHandler(kctx.RED));
   kctx.onKeyPress('g', makeAddPlayerColorHandler(kctx.GREEN));
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
+  kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
 }
 
 scene('game-scene', gameScene);
