@@ -40,6 +40,23 @@ function controlPlayerSpeed(player: Player): () => void {
   };
 }
 
+function checkPlayerBoundsCollision(player: Player): () => void {
+  return () => {
+    if (player.pos.x < 0) {
+      player.pos.x = kctx.width();
+    }
+    if (player.pos.x > kctx.width()) {
+      player.pos.x = 0;
+    }
+    if (player.pos.y < 0) {
+      player.pos.y = kctx.height();
+    }
+    if (player.pos.y > kctx.height()) {
+      player.pos.y = 0;
+    }
+  };
+}
+
 function gameScene(): void {
   const player: Player = kctx.add([
     kctx.rect(16, 16),
@@ -68,6 +85,7 @@ function gameScene(): void {
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
 
   onUpdate(controlPlayerSpeed(player));
+  onUpdate(checkPlayerBoundsCollision(player));
 }
 
 export default gameScene;
