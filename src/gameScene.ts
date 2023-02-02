@@ -1,16 +1,10 @@
-import {
-  Color,
-  GameObj,
-  RectComp,
-  ColorComp,
-  PosComp,
-  OriginComp,
-} from 'kaboom';
+import { Color } from 'kaboom';
 import combineColors, { ColorChannels } from './combineColors';
 import kctx from './kctx';
-import { speed, SpeedComp } from './speedComp';
+import { mobile } from './components/MobileComp';
+import { wrap } from './components/WrapComp';
 
-type Player = GameObj<RectComp | ColorComp | PosComp | OriginComp | SpeedComp>;
+kctx.loadSprite('spaceship', 'spaceship.png');
 
 function getColorChannels(color: Color): ColorChannels {
   const { r, g, b } = color;
@@ -21,63 +15,58 @@ function getColorChannels(color: Color): ColorChannels {
   };
 }
 
-function controlPlayerSpeed(player: Player): () => void {
-  const speedDelta = 0.05;
+// const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
 
-  return () => {
-    if (kctx.isKeyDown('up')) {
-      player.ySpeed -= speedDelta;
-    }
-    if (kctx.isKeyDown('right')) {
-      player.xSpeed += speedDelta;
-    }
-    if (kctx.isKeyDown('down')) {
-      player.ySpeed += speedDelta;
-    }
-    if (kctx.isKeyDown('left')) {
-      player.xSpeed -= speedDelta;
-    }
-  };
-}
-
-const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
-// const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
-
-function spawnAsteroid() {
-  const colorIndex = Math.floor(kctx.rand(0, LEVEL_1_ASTEROID_COLORS.length));
-  kctx.add([
-    kctx.rect(16, 16),
-    kctx.color(LEVEL_1_ASTEROID_COLORS[colorIndex]),
-    kctx.pos(200, 200),
-    kctx.origin('center'),
-  ]);
-}
-
-function checkPlayerBoundsCollision(player: Player): () => void {
-  return () => {
-    if (player.pos.x < 0) {
-      player.pos.x = kctx.width();
-    }
-    if (player.pos.x > kctx.width()) {
-      player.pos.x = 0;
-    }
-    if (player.pos.y < 0) {
-      player.pos.y = kctx.height();
-    }
-    if (player.pos.y > kctx.height()) {
-      player.pos.y = 0;
-    }
-  };
-}
+// function spawnAsteroid() {
+//   const colorIndex = Math.floor(kctx.rand(0, LEVEL_1_ASTEROID_COLORS.length));
+//   kctx.add([
+//     kctx.rect(16, 16),
+//     kctx.color(LEVEL_1_ASTEROID_COLORS[colorIndex]),
+//     kctx.pos(200, 200),
+//     kctx.origin('center'),
+//   ]);
+// }
 
 function gameScene(): void {
-  const player: Player = kctx.add([
-    kctx.rect(16, 16),
+  let score = 0;
+
+  kctx.layers(['obj', 'ui'], 'obj');
+
+  const ui = add([layer]);
+  ui.onDraw(() => {
+    kctx.drawText({
+      text: `Score ${score}`,
+      size: 14,
+      font: 'sink',
+      pos: kctx.vec2(8, 24),
+    });
+  });
+
+  const player = kctx.add([
+    kctx.sprite('spaceship'),
     kctx.color(kctx.WHITE),
     kctx.pos(kctx.width() / 2, kctx.height() / 2),
+    kctx.solid(),
     kctx.origin('center'),
-    speed(),
+    kctx.rotate(0),
+    kctx.area(),
+    wrap(),
+    mobile(),
     'player',
+    {
+      turn_speed: 4.58,
+      max_thrust: 48,
+      acceleration: 2,
+      deceleration: 4,
+      lives: 3,
+      can_shoot: true,
+      laser_cooldown: 0.5,
+      invulnerable: false,
+      invulnerablity_time: 3,
+      animation_frame: 0,
+      thrusting: false,
+    },
   ]);
 
   function makeAddPlayerColorHandler(color: Color): () => void {
@@ -97,10 +86,29 @@ function gameScene(): void {
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
 
-  kctx.loop(2, spawnAsteroid);
+  // kctx.loop(2, spawnAsteroid);
 
-  kctx.onUpdate(controlPlayerSpeed(player));
-  kctx.onUpdate(checkPlayerBoundsCollision(player));
+  kctx.onKeyDown('left', () => {
+    player.angle -= player.turn_speed;
+  });
+
+  kctx.onKeyDown('right', () => {
+    player.angle += player.turn_speed;
+  });
+
+  kctx.onKeyDown('up', () => {
+    player.speed = Math.min(
+      player.speed + player.acceleration,
+      player.max_thrust
+    );
+  });
+
+  kctx.onKeyDown('down', () => {
+    player.speed = Math.max(
+      player.speed - player.deceleration,
+      -player.max_thrust
+    );
+  });
 }
 
 export default gameScene;
