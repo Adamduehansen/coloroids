@@ -34,7 +34,7 @@ function gameScene(): void {
 
   kctx.layers(['obj', 'ui'], 'obj');
 
-  const ui = add([layer]);
+  const ui = add([kctx.layer('ui')]);
   ui.onDraw(() => {
     kctx.drawText({
       text: `Score ${score}`,
