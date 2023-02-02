@@ -3,6 +3,7 @@ import combineColors, { ColorChannels } from './combineColors';
 import kctx from './kctx';
 import { mobile } from './components/MobileComp';
 import { wrap } from './components/WrapComp';
+import { pointAt } from './lib/pointAt';
 
 kctx.loadSprite('spaceship', 'spaceship.png');
 
@@ -60,8 +61,8 @@ function gameScene(): void {
       acceleration: 2,
       deceleration: 4,
       lives: 3,
-      can_shoot: true,
-      laser_cooldown: 0.5,
+      canShoot: true,
+      laserCooldown: 0.5,
       invulnerable: false,
       invulnerablity_time: 3,
       animation_frame: 0,
@@ -108,6 +109,28 @@ function gameScene(): void {
       player.speed - player.deceleration,
       -player.max_thrust
     );
+  });
+
+  kctx.onKeyDown('space', () => {
+    if (!player.canShoot) {
+      return;
+    }
+
+    kctx.add([
+      kctx.rect(10, 10),
+      kctx.pos(player.pos.add(pointAt(player.width / 2, player.angle))),
+      kctx.rotate(player.angle),
+      kctx.origin('center'),
+      kctx.area(),
+      kctx.color(player.color),
+      mobile(100),
+      'bullet',
+    ]);
+
+    player.canShoot = false;
+    kctx.wait(player.laserCooldown, () => {
+      player.canShoot = true;
+    });
   });
 }
 
