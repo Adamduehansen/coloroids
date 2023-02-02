@@ -16,18 +16,24 @@ function getColorChannels(color: Color): ColorChannels {
   };
 }
 
-// const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
-// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
+function getAsteroidSpawnPoint() {
+  return kctx.choose([
+    kctx.rand(kctx.vec2(0), kctx.vec2(kctx.width(), 0)),
+    kctx.rand(kctx.vec2(0), kctx.vec2(0, kctx.height())),
+    kctx.rand(
+      kctx.vec2(0, kctx.height()),
+      kctx.vec2(kctx.width(), kctx.height())
+    ),
+    kctx.rand(
+      kctx.vec2(kctx.width(), 0),
+      kctx.vec2(kctx.width(), kctx.height())
+    ),
+  ]);
+}
 
-// function spawnAsteroid() {
-//   const colorIndex = Math.floor(kctx.rand(0, LEVEL_1_ASTEROID_COLORS.length));
-//   kctx.add([
-//     kctx.rect(16, 16),
-//     kctx.color(LEVEL_1_ASTEROID_COLORS[colorIndex]),
-//     kctx.pos(200, 200),
-//     kctx.origin('center'),
-//   ]);
-// }
+const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+const MAX_NUMBER_OF_ASTEROIDS = 5;
+// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
 
 function gameScene(): void {
   let score = 0;
@@ -56,8 +62,8 @@ function gameScene(): void {
     mobile(),
     'player',
     {
-      turn_speed: 4.58,
-      max_thrust: 48,
+      turnSpeed: 4.58,
+      maxThrust: 48,
       acceleration: 2,
       deceleration: 4,
       lives: 3,
@@ -90,24 +96,24 @@ function gameScene(): void {
   // kctx.loop(2, spawnAsteroid);
 
   kctx.onKeyDown('left', () => {
-    player.angle -= player.turn_speed;
+    player.angle -= player.turnSpeed;
   });
 
   kctx.onKeyDown('right', () => {
-    player.angle += player.turn_speed;
+    player.angle += player.turnSpeed;
   });
 
   kctx.onKeyDown('up', () => {
     player.speed = Math.min(
       player.speed + player.acceleration,
-      player.max_thrust
+      player.maxThrust
     );
   });
 
   kctx.onKeyDown('down', () => {
     player.speed = Math.max(
       player.speed - player.deceleration,
-      -player.max_thrust
+      -player.maxThrust
     );
   });
 
@@ -132,6 +138,32 @@ function gameScene(): void {
       player.canShoot = true;
     });
   });
+
+  for (let index = 0; index < MAX_NUMBER_OF_ASTEROIDS; index++) {
+    let spawnPoint = getAsteroidSpawnPoint();
+    const asteroid = kctx.add([
+      kctx.rect(50, 50),
+      kctx.pos(spawnPoint),
+      kctx.rotate(kctx.rand(1, 90)),
+      kctx.origin('center'),
+      kctx.color(kctx.choose(LEVEL_1_ASTEROID_COLORS)),
+      kctx.area(),
+      kctx.solid(),
+      mobile(kctx.rand(5, 10)),
+      wrap(),
+      {
+        initializing: true,
+      },
+    ]);
+
+    while (asteroid.isColliding('mobile')) {
+      spawnPoint = getAsteroidSpawnPoint();
+      asteroid.pos = spawnPoint;
+      asteroid.pushOutAll();
+    }
+
+    asteroid.initializing = false;
+  }
 }
 
 export default gameScene;
