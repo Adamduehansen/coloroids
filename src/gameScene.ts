@@ -76,6 +76,18 @@ function gameScene(): void {
     },
   ]);
 
+  player.on('damage', () => {
+    player.lives -= 1;
+
+    if (player.lives >= 0) {
+      return;
+    }
+
+    destroy(player);
+  });
+
+  player.on('destroy', () => {});
+
   function makeAddPlayerColorHandler(color: Color): () => void {
     return function (): void {
       const { r, g, b } = combineColors(
@@ -139,6 +151,34 @@ function gameScene(): void {
     });
   });
 
+  kctx.onCollide('player', 'asteroid', (player, asteroid) => {
+    if (asteroid.initializing) {
+      return;
+    }
+
+    kctx.destroy(asteroid);
+    player.trigger('damage');
+  });
+
+  kctx.onCollide('bullet', 'asteroid', (bullet, asteroid) => {
+    if (asteroid.initializing) {
+      return;
+    }
+
+    kctx.destroy(bullet);
+    kctx.destroy(asteroid);
+    score += 1;
+  });
+
+  kctx.onCollide('asteroid', 'asteroid', (asteroid1, asteroid2) => {
+    if (asteroid1.initializing || asteroid2.initializing) {
+      return;
+    }
+
+    asteroid1.speed = -asteroid1.speed;
+    asteroid2.speed = -asteroid2.speed;
+  });
+
   for (let index = 0; index < MAX_NUMBER_OF_ASTEROIDS; index++) {
     let spawnPoint = getAsteroidSpawnPoint();
     const asteroid = kctx.add([
@@ -151,11 +191,13 @@ function gameScene(): void {
       kctx.solid(),
       mobile(kctx.rand(5, 10)),
       wrap(),
+      'asteroid',
       {
         initializing: true,
       },
     ]);
 
+    // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
     while (asteroid.isColliding('mobile')) {
       spawnPoint = getAsteroidSpawnPoint();
       asteroid.pos = spawnPoint;
