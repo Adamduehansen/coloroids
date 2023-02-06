@@ -38,6 +38,29 @@ const MAX_NUMBER_OF_ASTEROIDS = 5;
 function gameScene(): void {
   let score = 0;
 
+  function makeAddPlayerColorHandler(color: Color): () => void {
+    return function (): void {
+      const { r, g, b } = combineColors(
+        getColorChannels(player.color),
+        getColorChannels(color)
+      );
+      player.color.r = r;
+      player.color.g = g;
+      player.color.b = b;
+    };
+  }
+
+  function gameOver(): void {
+    kctx.add([
+      kctx.text(`GAME OVER\n\nScore: ${score}\n\n[S]tart again?`, {
+        size: 20,
+      }),
+      kctx.pos(kctx.width() / 2, kctx.height() / 2),
+      kctx.layer('ui'),
+      kctx.origin('center'),
+    ]);
+  }
+
   kctx.layers(['obj', 'ui'], 'obj');
 
   const ui = add([kctx.layer('ui')]);
@@ -46,8 +69,25 @@ function gameScene(): void {
       text: `Score ${score}`,
       size: 14,
       font: 'sink',
-      pos: kctx.vec2(8, 24),
+      pos: kctx.vec2(8, 32),
     });
+
+    kctx.drawText({
+      text: 'Lives: ',
+      size: 14,
+      font: 'sink',
+      pos: kctx.vec2(8),
+    });
+
+    for (let x = 80; x < 80 + 16 * player.lives; x += 16) {
+      kctx.drawSprite({
+        sprite: 'spaceship',
+        pos: kctx.vec2(x, 14),
+        angle: -90,
+        origin: 'center',
+        scale: 0.7,
+      });
+    }
   });
 
   const player = kctx.add([
@@ -62,7 +102,7 @@ function gameScene(): void {
     mobile(),
     'player',
     {
-      turnSpeed: 4.58,
+      turnSpeed: 1,
       maxThrust: 48,
       acceleration: 2,
       deceleration: 4,
@@ -70,40 +110,40 @@ function gameScene(): void {
       canShoot: true,
       laserCooldown: 0.5,
       invulnerable: false,
-      invulnerablity_time: 3,
+      invulnerablityTime: 3,
       animation_frame: 0,
       thrusting: false,
     },
   ]);
 
   player.on('damage', () => {
-    player.lives -= 1;
-
-    if (player.lives >= 0) {
-      return;
+    if (!player.invulnerable) {
+      player.lives -= 1;
     }
 
-    destroy(player);
+    if (player.lives <= 0) {
+      kctx.destroy(player);
+    } else {
+      player.invulnerable = true;
+      kctx.wait(player.invulnerablityTime, () => {
+        player.invulnerable = false;
+        player.hidden = false;
+      });
+    }
   });
 
-  player.on('destroy', () => {});
-
-  function makeAddPlayerColorHandler(color: Color): () => void {
-    return function (): void {
-      const { r, g, b } = combineColors(
-        getColorChannels(player.color),
-        getColorChannels(color)
-      );
-      player.color.r = r;
-      player.color.g = g;
-      player.color.b = b;
-    };
-  }
+  player.onDestroy(gameOver);
 
   kctx.onKeyPress('r', makeAddPlayerColorHandler(kctx.RED));
   kctx.onKeyPress('g', makeAddPlayerColorHandler(kctx.GREEN));
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
+  kctx.onKeyPress('s', () => {
+    if (player.lives > 0) {
+      return;
+    }
+    kctx.go('gameScene');
+  });
 
   // kctx.loop(2, spawnAsteroid);
 
@@ -162,6 +202,11 @@ function gameScene(): void {
 
   kctx.onCollide('bullet', 'asteroid', (bullet, asteroid) => {
     if (asteroid.initializing) {
+      return;
+    }
+
+    if (bullet.color.toString() !== asteroid.color.toString()) {
+      kctx.destroy(bullet);
       return;
     }
 

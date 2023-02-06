@@ -1,6 +1,6 @@
 import './style.css';
 import gameScene from './gameScene';
 
-scene('game-scene', gameScene);
+scene('gameScene', gameScene);
 
-go('game-scene');
+go('gameScene');
