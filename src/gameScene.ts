@@ -31,6 +31,33 @@ function getAsteroidSpawnPoint() {
   ]);
 }
 
+function renderUI(options: { score: number; lives: number }): void {
+  const { score, lives } = options;
+  kctx.drawText({
+    text: `Score ${score}`,
+    size: 14,
+    font: 'sink',
+    pos: kctx.vec2(8, 32),
+  });
+
+  kctx.drawText({
+    text: 'Lives: ',
+    size: 14,
+    font: 'sink',
+    pos: kctx.vec2(8),
+  });
+
+  for (let x = 80; x < 80 + 16 * lives; x += 16) {
+    kctx.drawSprite({
+      sprite: 'spaceship',
+      pos: kctx.vec2(x, 14),
+      angle: -90,
+      origin: 'center',
+      scale: 0.7,
+    });
+  }
+}
+
 const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
 const MAX_NUMBER_OF_ASTEROIDS = 5;
 // // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
@@ -64,31 +91,6 @@ function gameScene(): void {
   kctx.layers(['obj', 'ui'], 'obj');
 
   const ui = add([kctx.layer('ui')]);
-  ui.onDraw(() => {
-    kctx.drawText({
-      text: `Score ${score}`,
-      size: 14,
-      font: 'sink',
-      pos: kctx.vec2(8, 32),
-    });
-
-    kctx.drawText({
-      text: 'Lives: ',
-      size: 14,
-      font: 'sink',
-      pos: kctx.vec2(8),
-    });
-
-    for (let x = 80; x < 80 + 16 * player.lives; x += 16) {
-      kctx.drawSprite({
-        sprite: 'spaceship',
-        pos: kctx.vec2(x, 14),
-        angle: -90,
-        origin: 'center',
-        scale: 0.7,
-      });
-    }
-  });
 
   const player = kctx.add([
     kctx.sprite('spaceship'),
@@ -111,8 +113,8 @@ function gameScene(): void {
       laserCooldown: 0.5,
       invulnerable: false,
       invulnerablityTime: 3,
-      animation_frame: 0,
       thrusting: false,
+      animateThrust: false,
     },
   ]);
 
@@ -132,7 +134,39 @@ function gameScene(): void {
     }
   });
 
+  player.onDraw(() => {
+    if (!player.thrusting || !player.animateThrust) {
+      return;
+    }
+    kctx.drawRect({
+      width: 4,
+      height: 4,
+      origin: 'center',
+      pos: kctx.vec2(-player.width / 2 - 2, 0),
+    });
+  });
+
+  let timer = 0;
+  kctx.onUpdate(() => {
+    timer += kctx.dt();
+
+    if (timer < 0.2) {
+      player.animateThrust = true;
+    } else if (timer >= 0.2 && timer < 0.4) {
+      player.animateThrust = false;
+    } else {
+      timer = 0;
+    }
+  });
+
   player.onDestroy(gameOver);
+
+  ui.onDraw(() =>
+    renderUI({
+      score: score,
+      lives: player.lives,
+    })
+  );
 
   kctx.onKeyPress('r', makeAddPlayerColorHandler(kctx.RED));
   kctx.onKeyPress('g', makeAddPlayerColorHandler(kctx.GREEN));
@@ -160,6 +194,14 @@ function gameScene(): void {
       player.speed + player.acceleration,
       player.maxThrust
     );
+  });
+
+  kctx.onKeyPress('up', () => {
+    player.thrusting = true;
+    timer = 0;
+  });
+  kctx.onKeyRelease('up', () => {
+    player.thrusting = false;
   });
 
   kctx.onKeyDown('down', () => {
