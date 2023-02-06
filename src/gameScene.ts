@@ -1,5 +1,5 @@
 import { Color } from 'kaboom';
-import combineColors, { ColorChannels } from './combineColors';
+import combineColors, { ColorChannels } from './lib/combineColors';
 import kctx from './kctx';
 import { mobile } from './components/MobileComp';
 import { wrap } from './components/WrapComp';
