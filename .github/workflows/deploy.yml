@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  VITE_ROUTER_BASENAME: /coloroids/
+  VITE_BASE: /coloroids/
 
 jobs:
   build:
