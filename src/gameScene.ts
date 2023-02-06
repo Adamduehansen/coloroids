@@ -6,6 +6,10 @@ import { wrap } from './components/WrapComp';
 import { pointAt } from './lib/pointAt';
 
 kctx.loadSprite('spaceship', 'spaceship.png');
+kctx.loadSprite('asteroids', 'asteroids.png', {
+  sliceX: 2,
+  sliceY: 1,
+});
 
 function getColorChannels(color: Color): ColorChannels {
   const { r, g, b } = color;
@@ -269,7 +273,9 @@ function gameScene(): void {
   for (let index = 0; index < MAX_NUMBER_OF_ASTEROIDS; index++) {
     let spawnPoint = getAsteroidSpawnPoint();
     const asteroid = kctx.add([
-      kctx.rect(50, 50),
+      kctx.sprite('asteroids', {
+        frame: kctx.choose([0, 1]),
+      }),
       kctx.pos(spawnPoint),
       kctx.rotate(kctx.rand(1, 90)),
       kctx.origin('center'),
