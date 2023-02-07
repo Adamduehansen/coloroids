@@ -11,6 +11,10 @@ kctx.loadSprite('asteroids', 'asteroids.png', {
   sliceY: 1,
 });
 
+const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+const MAX_NUMBER_OF_ASTEROIDS = 5;
+// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
+
 function getColorChannels(color: Color): ColorChannels {
   const { r, g, b } = color;
   return {
@@ -62,9 +66,39 @@ function renderUI(options: { score: number; lives: number }): void {
   }
 }
 
-const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
-const MAX_NUMBER_OF_ASTEROIDS = 5;
-// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
+function spawnAsteroid() {
+  let spawnPoint = getAsteroidSpawnPoint();
+  const asteroid = kctx.add([
+    kctx.sprite('asteroids', {
+      frame: kctx.choose([0, 1]),
+      width: 48,
+      height: 48,
+    }),
+    kctx.pos(spawnPoint),
+    kctx.rotate(kctx.rand(1, 90)),
+    kctx.origin('center'),
+    kctx.color(kctx.choose(LEVEL_1_ASTEROID_COLORS)),
+    kctx.area(),
+    kctx.solid(),
+    mobile(kctx.rand(-50, 50)),
+    wrap(),
+    'asteroid',
+    {
+      initializing: true,
+    },
+  ]);
+
+  // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
+  while (asteroid.isColliding('mobile')) {
+    spawnPoint = getAsteroidSpawnPoint();
+    asteroid.pos = spawnPoint;
+    asteroid.pushOutAll();
+  }
+
+  asteroid.onDestroy(spawnAsteroid);
+
+  asteroid.initializing = false;
+}
 
 function gameScene(): void {
   let score = 0;
@@ -271,35 +305,7 @@ function gameScene(): void {
   });
 
   for (let index = 0; index < MAX_NUMBER_OF_ASTEROIDS; index++) {
-    let spawnPoint = getAsteroidSpawnPoint();
-    const asteroid = kctx.add([
-      kctx.sprite('asteroids', {
-        frame: kctx.choose([0, 1]),
-        width: 48,
-        height: 48,
-      }),
-      kctx.pos(spawnPoint),
-      kctx.rotate(kctx.rand(1, 90)),
-      kctx.origin('center'),
-      kctx.color(kctx.choose(LEVEL_1_ASTEROID_COLORS)),
-      kctx.area(),
-      kctx.solid(),
-      mobile(kctx.rand(-50, 50)),
-      wrap(),
-      'asteroid',
-      {
-        initializing: true,
-      },
-    ]);
-
-    // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
-    while (asteroid.isColliding('mobile')) {
-      spawnPoint = getAsteroidSpawnPoint();
-      asteroid.pos = spawnPoint;
-      asteroid.pushOutAll();
-    }
-
-    asteroid.initializing = false;
+    spawnAsteroid();
   }
 }
 
