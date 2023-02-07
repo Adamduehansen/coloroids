@@ -221,7 +221,7 @@ function gameScene(): void {
     }
 
     kctx.add([
-      kctx.rect(10, 10),
+      kctx.rect(10, 5),
       kctx.pos(player.pos.add(pointAt(player.width / 2, player.angle))),
       kctx.rotate(player.angle),
       kctx.origin('center'),
