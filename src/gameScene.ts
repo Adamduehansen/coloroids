@@ -275,6 +275,8 @@ function gameScene(): void {
     const asteroid = kctx.add([
       kctx.sprite('asteroids', {
         frame: kctx.choose([0, 1]),
+        width: 48,
+        height: 48,
       }),
       kctx.pos(spawnPoint),
       kctx.rotate(kctx.rand(1, 90)),
@@ -282,7 +284,7 @@ function gameScene(): void {
       kctx.color(kctx.choose(LEVEL_1_ASTEROID_COLORS)),
       kctx.area(),
       kctx.solid(),
-      mobile(kctx.rand(5, 10)),
+      mobile(kctx.rand(-50, 50)),
       wrap(),
       'asteroid',
       {
