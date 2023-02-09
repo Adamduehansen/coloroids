@@ -1,5 +1,5 @@
 import { Comp, GameObj, PosComp } from 'kaboom';
-import kctx from '../kctx';
+import kctx from '../../kctx';
 
 interface WrapComp extends Comp {
   enable: boolean;

@@ -1,5 +1,5 @@
 import { Comp, GameObj, PosComp, RotateComp } from 'kaboom';
-import { pointAt } from '../lib/pointAt';
+import { pointAt } from '../../lib/pointAt';
 
 export interface MobileComp extends Comp {
   speed: number;
