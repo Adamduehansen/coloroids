@@ -197,6 +197,19 @@ function gameScene(): void {
     }
   });
 
+  let hiddenTimer = 0;
+  kctx.onUpdate(() => {
+    hiddenTimer += kctx.dt();
+    if (hiddenTimer < 0.1) {
+      return;
+    }
+    hiddenTimer = 0;
+
+    if (player.invulnerable) {
+      player.hidden = !player.hidden;
+    }
+  });
+
   player.onDestroy(gameOver);
 
   ui.onDraw(() =>
