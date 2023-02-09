@@ -71,8 +71,8 @@ function spawnAsteroid() {
   const asteroid = kctx.add([
     kctx.sprite('asteroids', {
       frame: kctx.choose([0, 1]),
-      width: 48,
-      height: 48,
+      width: 24,
+      height: 24,
     }),
     kctx.pos(spawnPoint),
     kctx.rotate(kctx.rand(1, 90)),
@@ -95,7 +95,10 @@ function spawnAsteroid() {
     asteroid.pushOutAll();
   }
 
-  asteroid.onDestroy(spawnAsteroid);
+  asteroid.onDestroy(() => {
+    spawnAsteroid();
+    spawnAsteroid();
+  });
 
   asteroid.initializing = false;
 }
@@ -142,8 +145,8 @@ function gameScene(): void {
     mobile(),
     'player',
     {
-      turnSpeed: 1,
-      maxThrust: 48,
+      turnSpeed: 4,
+      maxThrust: 90,
       acceleration: 2,
       deceleration: 4,
       lives: 3,
@@ -274,7 +277,7 @@ function gameScene(): void {
       kctx.origin('center'),
       kctx.area(),
       kctx.color(player.color),
-      mobile(100),
+      mobile(150),
       'bullet',
     ]);
 
