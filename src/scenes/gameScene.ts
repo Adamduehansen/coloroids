@@ -1,5 +1,6 @@
 import { Color, Vec2 } from 'kaboom';
 import combineColors, { ColorChannels } from '../lib/combineColors';
+import gameState, { resetGameState } from '../lib/gameState';
 import kctx from '../kctx';
 import { mobile } from '../components/custom/MobileComp';
 import { wrap } from '../components/custom/WrapComp';
@@ -39,8 +40,8 @@ function getAsteroidSpawnPoint() {
   ]);
 }
 
-function renderUI(options: { score: number; lives: number }): void {
-  const { score, lives } = options;
+function renderUI(): void {
+  const { score, lifes } = gameState;
   kctx.drawText({
     text: `Score ${score}`,
     size: 14,
@@ -55,7 +56,7 @@ function renderUI(options: { score: number; lives: number }): void {
     pos: kctx.vec2(8),
   });
 
-  for (let x = 80; x < 80 + 16 * lives; x += 16) {
+  for (let x = 80; x < 80 + 16 * lifes; x += 16) {
     kctx.drawSprite({
       sprite: 'spaceship',
       pos: kctx.vec2(x, 14),
@@ -67,8 +68,7 @@ function renderUI(options: { score: number; lives: number }): void {
 }
 
 function gameScene(): void {
-  let score = 0;
-  let gameOver = false;
+  resetGameState();
 
   function makeAddPlayerColorHandler(color: Color): () => void {
     return function (): void {
@@ -119,7 +119,7 @@ function gameScene(): void {
     }
 
     asteroid.onDestroy(() => {
-      if (gameOver) {
+      if (gameState.gameOver) {
         return;
       }
 
@@ -143,7 +143,7 @@ function gameScene(): void {
 
   function setGameOver(): void {
     kctx.add([
-      kctx.text(`GAME OVER\n\nScore: ${score}\n\n[S]tart again?`, {
+      kctx.text(`GAME OVER\n\nScore: ${gameState.score}\n\n[S]tart again?`, {
         size: 20,
       }),
       kctx.pos(kctx.width() / 2, kctx.height() / 2),
@@ -151,7 +151,7 @@ function gameScene(): void {
       kctx.origin('center'),
     ]);
 
-    gameOver = true;
+    gameState.gameOver = true;
   }
 
   kctx.layers(['obj', 'ui'], 'obj');
@@ -174,7 +174,6 @@ function gameScene(): void {
       maxThrust: 150,
       acceleration: 2,
       deceleration: 4,
-      lives: 3,
       canShoot: true,
       laserCooldown: 0.5,
       invulnerable: false,
@@ -186,10 +185,10 @@ function gameScene(): void {
 
   player.on('damage', () => {
     if (!player.invulnerable) {
-      player.lives -= 1;
+      gameState.lifes -= 1;
     }
 
-    if (player.lives <= 0) {
+    if (gameState.lifes <= 0) {
       kctx.destroy(player);
     } else {
       player.invulnerable = true;
@@ -240,21 +239,17 @@ function gameScene(): void {
 
   player.onDestroy(setGameOver);
 
-  ui.onDraw(() =>
-    renderUI({
-      score: score,
-      lives: player.lives,
-    })
-  );
+  ui.onDraw(renderUI);
 
   kctx.onKeyPress('r', makeAddPlayerColorHandler(kctx.RED));
   kctx.onKeyPress('g', makeAddPlayerColorHandler(kctx.GREEN));
   kctx.onKeyPress('b', makeAddPlayerColorHandler(kctx.BLUE));
   kctx.onKeyPress('w', makeAddPlayerColorHandler(kctx.WHITE));
   kctx.onKeyPress('s', () => {
-    if (player.lives > 0) {
+    if (gameState.lifes > 0) {
       return;
     }
+
     kctx.go('gameScene');
   });
 
@@ -331,7 +326,7 @@ function gameScene(): void {
 
     kctx.destroy(bullet);
     kctx.destroy(asteroid);
-    score += asteroid.points;
+    gameState.score += asteroid.points;
   });
 
   kctx.onCollide('asteroid', 'asteroid', (asteroid1, asteroid2) => {
