@@ -315,6 +315,14 @@ function gameScene(): void {
 
     asteroid1.speed = -asteroid1.speed;
     asteroid2.speed = -asteroid2.speed;
+
+    asteroid1.initializing = true;
+    asteroid2.initializing = true;
+
+    kctx.wait(1, () => {
+      asteroid1.initializing = false;
+      asteroid2.initializing = false;
+    });
   });
 
   for (let index = 0; index < MAX_NUMBER_OF_ASTEROIDS; index++) {
