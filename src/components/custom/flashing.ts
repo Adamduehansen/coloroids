@@ -1,12 +1,25 @@
 import { Comp, GameObj } from 'kaboom';
 import kctx from '../../kctx';
 
-interface FlashingComp extends Comp {}
+interface FlashingComp extends Comp {
+  pauseFlashing: boolean;
+}
 
-export default function flashing(interval: number): FlashingComp {
+export default function flashing(
+  interval: number,
+  options?: {
+    paused: boolean;
+  }
+): FlashingComp {
+  let pauseFlashing = options?.paused || false;
   let animationTimer = 0;
   return {
-    update: function (this: GameObj) {
+    pauseFlashing: pauseFlashing,
+    update: function (this: GameObj<FlashingComp>) {
+      if (this.pauseFlashing) {
+        return;
+      }
+
       animationTimer += kctx.dt();
 
       if (animationTimer <= interval) {

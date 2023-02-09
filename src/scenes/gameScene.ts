@@ -5,6 +5,7 @@ import kctx from '../kctx';
 import { mobile } from '../components/custom/MobileComp';
 import { wrap } from '../components/custom/WrapComp';
 import { pointAt } from '../lib/pointAt';
+import playerComponents from '../components/playerComponents';
 
 kctx.loadSprite('spaceship', 'spaceship.png');
 kctx.loadSprite('asteroids', 'asteroids.png', {
@@ -158,30 +159,7 @@ function gameScene(): void {
 
   const ui = add([kctx.layer('ui')]);
 
-  const player = kctx.add([
-    kctx.sprite('spaceship'),
-    kctx.color(kctx.WHITE),
-    kctx.pos(kctx.width() / 2, kctx.height() / 2),
-    kctx.solid(),
-    kctx.origin('center'),
-    kctx.rotate(0),
-    kctx.area(),
-    wrap(),
-    mobile(),
-    'player',
-    {
-      turnSpeed: 3,
-      maxThrust: 150,
-      acceleration: 2,
-      deceleration: 4,
-      canShoot: true,
-      laserCooldown: 0.5,
-      invulnerable: false,
-      invulnerablityTime: 3,
-      thrusting: false,
-      animateThrust: false,
-    },
-  ]);
+  const player = kctx.add(playerComponents);
 
   player.on('damage', () => {
     if (!player.invulnerable) {
@@ -192,9 +170,10 @@ function gameScene(): void {
       kctx.destroy(player);
     } else {
       player.invulnerable = true;
+      player.pauseFlashing = false;
       kctx.wait(player.invulnerablityTime, () => {
         player.invulnerable = false;
-        player.hidden = false;
+        player.pauseFlashing = true;
       });
     }
   });
@@ -221,19 +200,6 @@ function gameScene(): void {
       player.animateThrust = false;
     } else {
       timer = 0;
-    }
-  });
-
-  let hiddenTimer = 0;
-  kctx.onUpdate(() => {
-    hiddenTimer += kctx.dt();
-    if (hiddenTimer < 0.1) {
-      return;
-    }
-    hiddenTimer = 0;
-
-    if (player.invulnerable) {
-      player.hidden = !player.hidden;
     }
   });
 
