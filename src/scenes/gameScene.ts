@@ -1,9 +1,9 @@
 import { Color, Vec2 } from 'kaboom';
-import combineColors, { ColorChannels } from './lib/combineColors';
-import kctx from './kctx';
-import { mobile } from './components/custom/MobileComp';
-import { wrap } from './components/custom/WrapComp';
-import { pointAt } from './lib/pointAt';
+import combineColors, { ColorChannels } from '../lib/combineColors';
+import kctx from '../kctx';
+import { mobile } from '../components/custom/MobileComp';
+import { wrap } from '../components/custom/WrapComp';
+import { pointAt } from '../lib/pointAt';
 
 kctx.loadSprite('spaceship', 'spaceship.png');
 kctx.loadSprite('asteroids', 'asteroids.png', {

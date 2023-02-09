@@ -1,6 +1,6 @@
-import startLabelComponents from './components/startLabelComponents';
-import titleComponents from './components/titleComponents';
-import kctx from './kctx';
+import startLabelComponents from '../components/startLabelComponents';
+import titleComponents from '../components/titleComponents';
+import kctx from '../kctx';
 
 function startGame(): void {
   kctx.go('gameScene');
