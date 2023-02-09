@@ -66,63 +66,9 @@ function renderUI(options: { score: number; lives: number }): void {
   }
 }
 
-function spawnAsteroid(options?: { small: boolean; position: Vec2 }) {
-  let { small = kctx.rand(0, 1) > 0.5, position = getAsteroidSpawnPoint() } =
-    options || {};
-
-  const asteroid = kctx.add([
-    kctx.sprite('asteroids', {
-      frame: kctx.choose([0, 1]),
-      width: small ? 48 : 24,
-      height: small ? 48 : 24,
-    }),
-    kctx.pos(position),
-    kctx.rotate(kctx.rand(1, 90)),
-    kctx.origin('center'),
-    kctx.color(
-      small
-        ? kctx.choose(LARGE_ASTEROID_COLORS)
-        : kctx.choose(SMALL_ASTEROID_COLORS)
-    ),
-    kctx.area(),
-    kctx.solid(),
-    mobile(kctx.rand(-50, 50)),
-    wrap(),
-    'asteroid',
-    {
-      initializing: true,
-      points: small ? 2 : 1,
-    },
-  ]);
-
-  // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
-  while (asteroid.isColliding('mobile')) {
-    position = getAsteroidSpawnPoint();
-    asteroid.pos = position;
-    asteroid.pushOutAll();
-  }
-
-  asteroid.onDestroy(() => {
-    if (!small) {
-      spawnAsteroid();
-      spawnAsteroid();
-    } else {
-      spawnAsteroid({
-        small: false,
-        position: asteroid.pos,
-      });
-      spawnAsteroid({
-        small: false,
-        position: asteroid.pos,
-      });
-    }
-  });
-
-  asteroid.initializing = false;
-}
-
 function gameScene(): void {
   let score = 0;
+  let gameOver = false;
 
   function makeAddPlayerColorHandler(color: Color): () => void {
     return function (): void {
@@ -136,7 +82,66 @@ function gameScene(): void {
     };
   }
 
-  function gameOver(): void {
+  function spawnAsteroid(options?: { small: boolean; position: Vec2 }) {
+    let { small = kctx.rand(0, 1) > 0.5, position = getAsteroidSpawnPoint() } =
+      options || {};
+
+    const asteroid = kctx.add([
+      kctx.sprite('asteroids', {
+        frame: kctx.choose([0, 1]),
+        width: small ? 48 : 24,
+        height: small ? 48 : 24,
+      }),
+      kctx.pos(position),
+      kctx.rotate(kctx.rand(1, 90)),
+      kctx.origin('center'),
+      kctx.color(
+        small
+          ? kctx.choose(LARGE_ASTEROID_COLORS)
+          : kctx.choose(SMALL_ASTEROID_COLORS)
+      ),
+      kctx.area(),
+      kctx.solid(),
+      mobile(kctx.rand(-50, 50)),
+      wrap(),
+      'asteroid',
+      {
+        initializing: true,
+        points: small ? 2 : 1,
+      },
+    ]);
+
+    // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
+    while (asteroid.isColliding('mobile')) {
+      position = getAsteroidSpawnPoint();
+      asteroid.pos = position;
+      asteroid.pushOutAll();
+    }
+
+    asteroid.onDestroy(() => {
+      if (gameOver) {
+        return;
+      }
+
+      if (!small) {
+        spawnAsteroid();
+        spawnAsteroid();
+      } else {
+        spawnAsteroid({
+          small: false,
+          position: asteroid.pos,
+        });
+        spawnAsteroid({
+          small: false,
+          position: asteroid.pos,
+        });
+      }
+    });
+
+    asteroid.initializing = false;
+  }
+
+  function setGameOver(): void {
     kctx.add([
       kctx.text(`GAME OVER\n\nScore: ${score}\n\n[S]tart again?`, {
         size: 20,
@@ -145,6 +150,8 @@ function gameScene(): void {
       kctx.layer('ui'),
       kctx.origin('center'),
     ]);
+
+    gameOver = true;
   }
 
   kctx.layers(['obj', 'ui'], 'obj');
@@ -163,8 +170,8 @@ function gameScene(): void {
     mobile(),
     'player',
     {
-      turnSpeed: 4,
-      maxThrust: 90,
+      turnSpeed: 3,
+      maxThrust: 150,
       acceleration: 2,
       deceleration: 4,
       lives: 3,
@@ -231,7 +238,7 @@ function gameScene(): void {
     }
   });
 
-  player.onDestroy(gameOver);
+  player.onDestroy(setGameOver);
 
   ui.onDraw(() =>
     renderUI({
@@ -250,8 +257,6 @@ function gameScene(): void {
     }
     kctx.go('gameScene');
   });
-
-  // kctx.loop(2, spawnAsteroid);
 
   kctx.onKeyDown('left', () => {
     player.angle -= player.turnSpeed;
@@ -295,7 +300,7 @@ function gameScene(): void {
       kctx.origin('center'),
       kctx.area(),
       kctx.color(player.color),
-      mobile(150),
+      mobile(400),
       'bullet',
     ]);
 
