@@ -1,4 +1,4 @@
-import { Color } from 'kaboom';
+import { Color, Vec2 } from 'kaboom';
 import combineColors, { ColorChannels } from './lib/combineColors';
 import kctx from './kctx';
 import { mobile } from './components/MobileComp';
@@ -11,9 +11,9 @@ kctx.loadSprite('asteroids', 'asteroids.png', {
   sliceY: 1,
 });
 
-const LEVEL_1_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+const SMALL_ASTEROID_COLORS = [kctx.RED, kctx.GREEN, kctx.BLUE];
+const LARGE_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
 const MAX_NUMBER_OF_ASTEROIDS = 5;
-// // const LEVEL_2_ASTEROID_COLORS = [kctx.YELLOW, kctx.CYAN, kctx.MAGENTA];
 
 function getColorChannels(color: Color): ColorChannels {
   const { r, g, b } = color;
@@ -66,18 +66,24 @@ function renderUI(options: { score: number; lives: number }): void {
   }
 }
 
-function spawnAsteroid() {
-  let spawnPoint = getAsteroidSpawnPoint();
+function spawnAsteroid(options?: { small: boolean; position: Vec2 }) {
+  let { small = kctx.rand(0, 1) > 0.5, position = getAsteroidSpawnPoint() } =
+    options || {};
+
   const asteroid = kctx.add([
     kctx.sprite('asteroids', {
       frame: kctx.choose([0, 1]),
-      width: 24,
-      height: 24,
+      width: small ? 48 : 24,
+      height: small ? 48 : 24,
     }),
-    kctx.pos(spawnPoint),
+    kctx.pos(position),
     kctx.rotate(kctx.rand(1, 90)),
     kctx.origin('center'),
-    kctx.color(kctx.choose(LEVEL_1_ASTEROID_COLORS)),
+    kctx.color(
+      small
+        ? kctx.choose(LARGE_ASTEROID_COLORS)
+        : kctx.choose(SMALL_ASTEROID_COLORS)
+    ),
     kctx.area(),
     kctx.solid(),
     mobile(kctx.rand(-50, 50)),
@@ -85,19 +91,31 @@ function spawnAsteroid() {
     'asteroid',
     {
       initializing: true,
+      points: small ? 2 : 1,
     },
   ]);
 
   // @ts-ignore isColliding does not typecheck with a string but Kaboom allows this.
   while (asteroid.isColliding('mobile')) {
-    spawnPoint = getAsteroidSpawnPoint();
-    asteroid.pos = spawnPoint;
+    position = getAsteroidSpawnPoint();
+    asteroid.pos = position;
     asteroid.pushOutAll();
   }
 
   asteroid.onDestroy(() => {
-    spawnAsteroid();
-    spawnAsteroid();
+    if (!small) {
+      spawnAsteroid();
+      spawnAsteroid();
+    } else {
+      spawnAsteroid({
+        small: false,
+        position: asteroid.pos,
+      });
+      spawnAsteroid({
+        small: false,
+        position: asteroid.pos,
+      });
+    }
   });
 
   asteroid.initializing = false;
@@ -308,7 +326,7 @@ function gameScene(): void {
 
     kctx.destroy(bullet);
     kctx.destroy(asteroid);
-    score += 1;
+    score += asteroid.points;
   });
 
   kctx.onCollide('asteroid', 'asteroid', (asteroid1, asteroid2) => {
