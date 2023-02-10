@@ -17,6 +17,8 @@ export default function flashing(
     pauseFlashing: pauseFlashing,
     update: function (this: GameObj<FlashingComp>) {
       if (this.pauseFlashing) {
+        this.hidden = false;
+        animationTimer = 0;
         return;
       }
 
