@@ -6,6 +6,7 @@ import { mobile } from '../components/custom/MobileComp';
 import { wrap } from '../components/custom/WrapComp';
 import { pointAt } from '../lib/pointAt';
 import playerComponents from '../components/playerComponents';
+import scoreRepository from '../lib/ScoreRepository';
 
 kctx.loadSprite('spaceship', 'spaceship.png');
 kctx.loadSprite('asteroids', 'asteroids.png', {
@@ -70,6 +71,7 @@ function renderUI(): void {
 
 function gameScene(): void {
   resetGameState();
+  const { storeHighscore } = scoreRepository;
 
   function makeAddPlayerColorHandler(color: Color): () => void {
     return function (): void {
@@ -142,11 +144,20 @@ function gameScene(): void {
     asteroid.initializing = false;
   }
 
-  function setGameOver(): void {
+  function gameOver(): void {
+    const highscore = storeHighscore(gameState.score, localStorage);
+
     kctx.add([
-      kctx.text(`GAME OVER\n\nScore: ${gameState.score}\n\n[S]tart again?`, {
-        size: 20,
-      }),
+      kctx.text(
+        `GAME OVER
+Score: ${gameState.score}
+Highscore: ${highscore}
+[S]tart again?`,
+        {
+          size: 20,
+          lineSpacing: 10,
+        }
+      ),
       kctx.pos(kctx.width() / 2, kctx.height() / 2),
       kctx.layer('ui'),
       kctx.origin('center'),
@@ -203,7 +214,7 @@ function gameScene(): void {
     }
   });
 
-  player.onDestroy(setGameOver);
+  player.onDestroy(gameOver);
 
   ui.onDraw(renderUI);
 
