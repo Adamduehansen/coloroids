@@ -261,7 +261,7 @@ Highscore: ${highscore}
   });
 
   kctx.onKeyDown('space', () => {
-    if (!player.canShoot) {
+    if (!player.canShoot || gameState.gameOver) {
       return;
     }
 
