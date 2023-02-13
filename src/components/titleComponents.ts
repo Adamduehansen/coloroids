@@ -8,7 +8,7 @@ const titleComponents: Comp[] = [
     font: 'sink',
   }),
   kctx.origin('center'),
-  kctx.pos(kctx.width() / 2, 150),
+  kctx.pos(kctx.width() / 2, 100),
 ];
 
 export default titleComponents;

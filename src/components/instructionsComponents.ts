@@ -4,10 +4,11 @@ const instructionsComponents = [
   kctx.text(
     `Instructions:
 Use R, G, B to match the color of
-the asteroid you wish to destroy.
+the asteroid you want to destroy.
+Reset color to White with W.
 Control the spaceship with the
 arrow keys and fire a rocket with
-space
+the space key 
   `,
     {
       size: 18,

@@ -8,7 +8,7 @@ const startLabelComponents: Comp[] = [
     font: 'sink',
   }),
   kctx.origin('center'),
-  kctx.pos(kctx.width() / 2, 400),
+  kctx.pos(kctx.width() / 2, 450),
   flashing(0.5),
 ];
 
