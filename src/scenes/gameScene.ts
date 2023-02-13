@@ -171,6 +171,7 @@ Highscore: ${highscore}
   const ui = add([kctx.layer('ui')]);
 
   const player = kctx.add(playerComponents);
+  player.pos = kctx.vec2(kctx.width() / 2, kctx.height() / 2);
 
   player.on('damage', () => {
     if (!player.invulnerable) {

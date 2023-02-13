@@ -6,7 +6,7 @@ import kctx from '../kctx';
 const playerComponents = [
   kctx.sprite('spaceship'),
   kctx.color(kctx.WHITE),
-  kctx.pos(kctx.width() / 2, kctx.height() / 2),
+  kctx.pos(),
   kctx.solid(),
   kctx.origin('center'),
   kctx.rotate(0),
