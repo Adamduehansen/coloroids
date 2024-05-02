@@ -6,6 +6,8 @@ import {
   Loader,
   Sprite,
   SourceView,
+  Keys,
+  vec,
 } from "excalibur";
 
 const game = new Engine({
@@ -76,8 +78,29 @@ spaceship.graphics.use(
 );
 game.add(spaceship);
 
-game.input.keyboard.on("hold", () => {
-  console.log("asdfsa");
+let speed = 0;
+const THRUST_SPEED = 0.2;
+const MAX_SPEED = 20;
+game.on("preupdate", () => {
+  if (game.input.keyboard.isHeld(Keys.D)) {
+    spaceship.rotation += 0.01;
+  }
+
+  if (game.input.keyboard.isHeld(Keys.A)) {
+    spaceship.rotation -= 0.01;
+  }
+
+  if (game.input.keyboard.isHeld(Keys.W)) {
+    speed = Math.min(speed + THRUST_SPEED, MAX_SPEED);
+  }
+
+  if (game.input.keyboard.isHeld(Keys.S)) {
+    speed = Math.max(speed - THRUST_SPEED, -MAX_SPEED);
+  }
+
+  console.log(speed);
+
+  spaceship.vel.x = speed;
 });
 
 game.start(loader);
