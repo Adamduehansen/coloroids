@@ -67,8 +67,8 @@ asteroid.on("preupdate", () => {
 game.add(asteroid);
 
 const spaceship = new Actor({
-  x: game.canvas.width / 2,
-  y: game.canvas.height / 2,
+  x: game.drawWidth / 2,
+  y: game.drawHeight / 2,
 });
 spaceship.graphics.use(
   new Sprite({
@@ -78,16 +78,18 @@ spaceship.graphics.use(
 );
 game.add(spaceship);
 
+const THRUST_SPEED = 2;
+const MAX_SPEED = 100;
+const ROTATION_SPEED = 0.025;
+
 let speed = 0;
-const THRUST_SPEED = 0.2;
-const MAX_SPEED = 20;
 game.on("preupdate", () => {
   if (game.input.keyboard.isHeld(Keys.D)) {
-    spaceship.rotation += 0.01;
+    spaceship.rotation += ROTATION_SPEED;
   }
 
   if (game.input.keyboard.isHeld(Keys.A)) {
-    spaceship.rotation -= 0.01;
+    spaceship.rotation -= ROTATION_SPEED;
   }
 
   if (game.input.keyboard.isHeld(Keys.W)) {
@@ -98,9 +100,9 @@ game.on("preupdate", () => {
     speed = Math.max(speed - THRUST_SPEED, -MAX_SPEED);
   }
 
-  console.log(speed);
-
-  spaceship.vel.x = speed;
+  const vx = Math.cos(spaceship.rotation) * speed;
+  const vy = Math.sin(spaceship.rotation) * speed;
+  spaceship.vel = vec(vx, vy);
 });
 
 game.start(loader);
