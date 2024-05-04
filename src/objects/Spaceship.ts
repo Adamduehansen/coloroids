@@ -1,5 +1,30 @@
-import { Actor, ActorArgs, Color, Engine, Keys, vec } from "excalibur";
-import { spaceshipIdleSprite, spaceshipThrustAnimation } from "../resources";
+import {
+  Actor,
+  ActorArgs,
+  Color,
+  Engine,
+  Graphic,
+  Keys,
+  SourceView,
+  Sprite,
+  vec,
+  Animation,
+} from "excalibur";
+import { spritesheetSource } from "../resources";
+
+const spaceshipIdleSourceView: SourceView = {
+  x: 96,
+  y: 128,
+  width: 48,
+  height: 32,
+};
+
+const spaceshipThrustSourceView: SourceView = {
+  x: 144,
+  y: 128,
+  width: 48,
+  height: 32,
+};
 
 const THRUST_SPEED = 2;
 const MAX_SPEED = 100;
@@ -7,19 +32,50 @@ const ROTATION_SPEED = 0.025;
 
 export default class Spaceship extends Actor {
   #speed = 0;
+  #idleGraphic: Graphic;
+  #thrustGraphic: Graphic;
 
   constructor({ x, y }: Pick<ActorArgs, "x" | "y">) {
     super({
       x: x,
       y: y,
     });
+    this.#idleGraphic = new Sprite({
+      image: spritesheetSource,
+      sourceView: spaceshipIdleSourceView,
+    });
+    this.#thrustGraphic = new Animation({
+      frames: [
+        {
+          graphic: new Sprite({
+            image: spritesheetSource,
+            sourceView: spaceshipIdleSourceView,
+          }),
+          duration: 200,
+        },
+        {
+          graphic: new Sprite({
+            image: spritesheetSource,
+            sourceView: spaceshipThrustSourceView,
+          }),
+          duration: 500,
+        },
+      ],
+    });
   }
 
   onInitialize(): void {
-    this.graphics.use(spaceshipIdleSprite);
+    this.graphics.use(this.#idleGraphic);
   }
 
   onPreUpdate(engine: Engine<any>): void {
+    this.#handleControls(engine);
+    const vx = Math.cos(this.rotation) * this.#speed;
+    const vy = Math.sin(this.rotation) * this.#speed;
+    this.vel = vec(vx, vy);
+  }
+
+  #handleControls(engine: Engine) {
     if (engine.input.keyboard.isHeld(Keys.D)) {
       this.rotation += ROTATION_SPEED;
     }
@@ -30,11 +86,11 @@ export default class Spaceship extends Actor {
 
     if (engine.input.keyboard.isHeld(Keys.W)) {
       this.#speed = Math.min(this.#speed + THRUST_SPEED, MAX_SPEED);
-      this.graphics.use(spaceshipThrustAnimation);
+      this.graphics.use(this.#thrustGraphic);
     }
 
     if (engine.input.keyboard.wasReleased(Keys.W)) {
-      this.graphics.use(spaceshipIdleSprite);
+      this.graphics.use(this.#idleGraphic);
     }
 
     if (engine.input.keyboard.isHeld(Keys.S)) {
@@ -42,19 +98,20 @@ export default class Spaceship extends Actor {
     }
 
     if (engine.input.keyboard.wasPressed(Keys.R)) {
-      this.graphics.current!.tint = Color.Red;
+      this.#setGraphicColors(Color.Red);
     }
 
     if (engine.input.keyboard.wasPressed(Keys.B)) {
-      this.graphics.current!.tint = Color.Blue;
+      this.#setGraphicColors(Color.Blue);
     }
 
     if (engine.input.keyboard.wasPressed(Keys.G)) {
-      this.graphics.current!.tint = Color.Green;
+      this.#setGraphicColors(Color.Green);
     }
+  }
 
-    const vx = Math.cos(this.rotation) * this.#speed;
-    const vy = Math.sin(this.rotation) * this.#speed;
-    this.vel = vec(vx, vy);
+  #setGraphicColors(color: Color) {
+    this.#idleGraphic.tint = color;
+    this.#thrustGraphic.tint = color;
   }
 }
