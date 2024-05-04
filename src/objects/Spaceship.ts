@@ -76,24 +76,24 @@ export default class Spaceship extends Actor {
   }
 
   #handleControls(engine: Engine) {
-    if (engine.input.keyboard.isHeld(Keys.D)) {
+    if (engine.input.keyboard.isHeld(Keys.Right)) {
       this.rotation += ROTATION_SPEED;
     }
 
-    if (engine.input.keyboard.isHeld(Keys.A)) {
+    if (engine.input.keyboard.isHeld(Keys.Left)) {
       this.rotation -= ROTATION_SPEED;
     }
 
-    if (engine.input.keyboard.isHeld(Keys.W)) {
+    if (engine.input.keyboard.isHeld(Keys.Up)) {
       this.#speed = Math.min(this.#speed + THRUST_SPEED, MAX_SPEED);
       this.graphics.use(this.#thrustGraphic);
     }
 
-    if (engine.input.keyboard.wasReleased(Keys.W)) {
+    if (engine.input.keyboard.wasReleased(Keys.Up)) {
       this.graphics.use(this.#idleGraphic);
     }
 
-    if (engine.input.keyboard.isHeld(Keys.S)) {
+    if (engine.input.keyboard.isHeld(Keys.Down)) {
       this.#speed = Math.max(this.#speed - THRUST_SPEED, -MAX_SPEED);
     }
 
