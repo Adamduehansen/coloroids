@@ -11,8 +11,8 @@ import {
 } from "excalibur";
 
 const game = new Engine({
-  width: 500,
-  height: 500,
+  width: 800,
+  height: 800,
   backgroundColor: Color.Black,
   suppressPlayButton: true,
 });
