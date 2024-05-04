@@ -17,29 +17,29 @@ const game = new Engine({
   suppressPlayButton: true,
 });
 
-const spritesheetSource = new ImageSource("/spritesheet.png");
+const spritesheetSource = new ImageSource("/asteroids.png");
 
 const loader = new Loader([spritesheetSource]);
 
 const asteroidSmall1SourceView: SourceView = {
   x: 0,
-  y: 256,
-  width: 60,
-  height: 60,
+  y: 128,
+  width: 32,
+  height: 32,
 };
 
 const asteroidSmall2SourceView: SourceView = {
-  x: 64,
-  y: 256,
-  width: 60,
-  height: 60,
+  x: 32,
+  y: 128,
+  width: 32,
+  height: 32,
 };
 
 const spaceshipIdleSourceView: SourceView = {
-  x: 192,
-  y: 256,
-  width: 96,
-  height: 64,
+  x: 96,
+  y: 128,
+  width: 48,
+  height: 32,
 };
 
 const sourceViews = {
