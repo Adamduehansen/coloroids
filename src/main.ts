@@ -1,89 +1,16 @@
+import { Actor, Color, Engine, Keys, vec } from "excalibur";
 import {
-  Actor,
-  Color,
-  Engine,
-  ImageSource,
-  Loader,
-  Sprite,
-  SourceView,
-  Keys,
-  vec,
-  Animation,
-} from "excalibur";
+  asteroidSmall1,
+  loader,
+  spaceshipIdleSprite,
+  spaceshipThrustAnimation,
+} from "./resources";
 
 const game = new Engine({
   width: 800,
   height: 800,
   backgroundColor: Color.Black,
   suppressPlayButton: true,
-});
-
-const spritesheetSource = new ImageSource("/asteroids.png");
-
-const loader = new Loader([spritesheetSource]);
-
-const asteroidSmall1SourceView: SourceView = {
-  x: 0,
-  y: 128,
-  width: 32,
-  height: 32,
-};
-
-const asteroidSmall2SourceView: SourceView = {
-  x: 32,
-  y: 128,
-  width: 32,
-  height: 32,
-};
-
-const spaceshipIdleSourceView: SourceView = {
-  x: 96,
-  y: 128,
-  width: 48,
-  height: 32,
-};
-
-const spaceshipThrustSourceView: SourceView = {
-  x: 144,
-  y: 128,
-  width: 48,
-  height: 32,
-};
-
-const sourceViews = {
-  asteroidSmall1: asteroidSmall1SourceView,
-  asteroidSmall2: asteroidSmall2SourceView,
-  spaceshipIdle: spaceshipIdleSourceView,
-  spaceshipThrust: spaceshipThrustSourceView,
-} as const;
-
-const asteroidSmall1 = new Sprite({
-  image: spritesheetSource,
-  sourceView: sourceViews.asteroidSmall2,
-});
-
-const spaceshipIdleSprite = new Sprite({
-  image: spritesheetSource,
-  sourceView: sourceViews.spaceshipIdle,
-});
-
-const spaceshipThrustSprite = new Sprite({
-  image: spritesheetSource,
-  sourceView: sourceViews.spaceshipThrust,
-});
-
-const SPACESHIPT_THRUST_ANIMATION_SPEED = 200;
-const spaceshipThrustAnimation = new Animation({
-  frames: [
-    {
-      graphic: spaceshipThrustSprite,
-      duration: SPACESHIPT_THRUST_ANIMATION_SPEED,
-    },
-    {
-      graphic: spaceshipIdleSprite,
-      duration: SPACESHIPT_THRUST_ANIMATION_SPEED,
-    },
-  ],
 });
 
 const asteroid = new Actor({
@@ -131,6 +58,18 @@ game.on("preupdate", () => {
 
   if (game.input.keyboard.isHeld(Keys.S)) {
     speed = Math.max(speed - THRUST_SPEED, -MAX_SPEED);
+  }
+
+  if (game.input.keyboard.wasPressed(Keys.R)) {
+    spaceship.graphics.current!.tint = Color.Red;
+  }
+
+  if (game.input.keyboard.wasPressed(Keys.B)) {
+    spaceship.graphics.current!.tint = Color.Blue;
+  }
+
+  if (game.input.keyboard.wasPressed(Keys.G)) {
+    spaceship.graphics.current!.tint = Color.Green;
   }
 
   const vx = Math.cos(spaceship.rotation) * speed;
