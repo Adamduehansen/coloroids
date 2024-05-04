@@ -8,6 +8,7 @@ import {
   SourceView,
   Keys,
   vec,
+  Animation,
 } from "excalibur";
 
 const game = new Engine({
@@ -42,15 +43,47 @@ const spaceshipIdleSourceView: SourceView = {
   height: 32,
 };
 
+const spaceshipThrustSourceView: SourceView = {
+  x: 144,
+  y: 128,
+  width: 48,
+  height: 32,
+};
+
 const sourceViews = {
   asteroidSmall1: asteroidSmall1SourceView,
   asteroidSmall2: asteroidSmall2SourceView,
   spaceshipIdle: spaceshipIdleSourceView,
+  spaceshipThrust: spaceshipThrustSourceView,
 } as const;
 
-var asteroidSmall1 = new Sprite({
+const asteroidSmall1 = new Sprite({
   image: spritesheetSource,
   sourceView: sourceViews.asteroidSmall2,
+});
+
+const spaceshipIdleSprite = new Sprite({
+  image: spritesheetSource,
+  sourceView: sourceViews.spaceshipIdle,
+});
+
+const spaceshipThrustSprite = new Sprite({
+  image: spritesheetSource,
+  sourceView: sourceViews.spaceshipThrust,
+});
+
+const SPACESHIPT_THRUST_ANIMATION_SPEED = 200;
+const spaceshipThrustAnimation = new Animation({
+  frames: [
+    {
+      graphic: spaceshipThrustSprite,
+      duration: SPACESHIPT_THRUST_ANIMATION_SPEED,
+    },
+    {
+      graphic: spaceshipIdleSprite,
+      duration: SPACESHIPT_THRUST_ANIMATION_SPEED,
+    },
+  ],
 });
 
 const asteroid = new Actor({
@@ -70,12 +103,7 @@ const spaceship = new Actor({
   x: game.drawWidth / 2,
   y: game.drawHeight / 2,
 });
-spaceship.graphics.use(
-  new Sprite({
-    image: spritesheetSource,
-    sourceView: sourceViews.spaceshipIdle,
-  })
-);
+spaceship.graphics.use(spaceshipIdleSprite);
 game.add(spaceship);
 
 const THRUST_SPEED = 2;
@@ -94,6 +122,11 @@ game.on("preupdate", () => {
 
   if (game.input.keyboard.isHeld(Keys.W)) {
     speed = Math.min(speed + THRUST_SPEED, MAX_SPEED);
+    spaceship.graphics.use(spaceshipThrustAnimation);
+  }
+
+  if (game.input.keyboard.wasReleased(Keys.W)) {
+    spaceship.graphics.use(spaceshipIdleSprite);
   }
 
   if (game.input.keyboard.isHeld(Keys.S)) {
