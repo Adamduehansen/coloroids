@@ -1,6 +1,7 @@
-import { Actor, Color, Engine } from "excalibur";
-import { asteroidSmall1, loader } from "./resources";
+import { Color, Engine } from "excalibur";
+import { loader } from "./resources";
 import Spaceship from "./objects/Spaceship";
+import Asteroid from "./objects/Asteroid";
 
 const game = new Engine({
   width: 800,
@@ -9,23 +10,16 @@ const game = new Engine({
   suppressPlayButton: true,
 });
 
-const asteroid = new Actor({
-  x: 64,
-  y: 64,
-  width: 50,
-  height: 50,
-});
-asteroid.graphics.use(asteroidSmall1);
-asteroid.graphics.current!.tint = Color.Blue;
-asteroid.on("preupdate", () => {
-  asteroid.rotation += 0.005;
-});
-game.add(asteroid);
-
 const spaceship = new Spaceship({
   x: game.drawWidth / 2,
   y: game.drawHeight / 2,
 });
 game.add(spaceship);
+
+const asteroid = new Asteroid({
+  x: 200,
+  y: 200,
+});
+game.add(asteroid);
 
 game.start(loader);

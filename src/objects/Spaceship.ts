@@ -1,30 +1,15 @@
 import {
   Actor,
-  ActorArgs,
+  type ActorArgs,
   Color,
   Engine,
   Graphic,
   Keys,
-  SourceView,
   Sprite,
   vec,
   Animation,
 } from "excalibur";
-import { spritesheetSource } from "../resources";
-
-const spaceshipIdleSourceView: SourceView = {
-  x: 96,
-  y: 128,
-  width: 48,
-  height: 32,
-};
-
-const spaceshipThrustSourceView: SourceView = {
-  x: 144,
-  y: 128,
-  width: 48,
-  height: 32,
-};
+import { sourceViews, spritesheetSource } from "../resources";
 
 const THRUST_SPEED = 2;
 const MAX_SPEED = 100;
@@ -39,24 +24,25 @@ export default class Spaceship extends Actor {
     super({
       x: x,
       y: y,
+      name: "Spaceship",
     });
     this.#idleGraphic = new Sprite({
       image: spritesheetSource,
-      sourceView: spaceshipIdleSourceView,
+      sourceView: sourceViews.spaceshipIdle,
     });
     this.#thrustGraphic = new Animation({
       frames: [
         {
           graphic: new Sprite({
             image: spritesheetSource,
-            sourceView: spaceshipIdleSourceView,
+            sourceView: sourceViews.spaceshipIdle,
           }),
           duration: 200,
         },
         {
           graphic: new Sprite({
             image: spritesheetSource,
-            sourceView: spaceshipThrustSourceView,
+            sourceView: sourceViews.spaceshipThrust,
           }),
           duration: 500,
         },
@@ -107,6 +93,14 @@ export default class Spaceship extends Actor {
 
     if (engine.input.keyboard.wasPressed(Keys.G)) {
       this.#setGraphicColors(Color.Green);
+    }
+
+    if (engine.input.keyboard.wasPressed(Keys.Space)) {
+      // const bullet = new Bullet({
+      //   x: this.pos.x,
+      //   y: this.pos.y,
+      // });
+      // engine.add(bullet);
     }
   }
 

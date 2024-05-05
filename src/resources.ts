@@ -1,4 +1,4 @@
-import { ImageSource, Loader, SourceView, Sprite } from "excalibur";
+import { ImageSource, Loader, type SourceView } from "excalibur";
 
 export const spritesheetSource = new ImageSource("/asteroids.png");
 
@@ -30,16 +30,19 @@ const spaceshipThrustSourceView: SourceView = {
   height: 32,
 };
 
-const sourceViews = {
+const bulletSourceView: SourceView = {
+  x: 224,
+  y: 142,
+  width: 16,
+  height: 16,
+};
+
+export const sourceViews = {
   asteroidSmall1: asteroidSmall1SourceView,
   asteroidSmall2: asteroidSmall2SourceView,
   spaceshipIdle: spaceshipIdleSourceView,
   spaceshipThrust: spaceshipThrustSourceView,
+  bullet: bulletSourceView,
 } as const;
-
-export const asteroidSmall1 = new Sprite({
-  image: spritesheetSource,
-  sourceView: sourceViews.asteroidSmall2,
-});
 
 export const loader = new Loader([spritesheetSource]);
