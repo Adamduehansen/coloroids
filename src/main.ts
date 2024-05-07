@@ -1,13 +1,14 @@
-import { Color, Engine } from "excalibur";
+import { Color, DisplayMode, Engine } from "excalibur";
 import { loader } from "./resources";
 import Spaceship from "./objects/Spaceship";
 import Asteroid from "./objects/Asteroid";
 
 const game = new Engine({
-  width: 800,
-  height: 800,
+  width: 1440,
+  height: 900,
   backgroundColor: Color.Black,
   suppressPlayButton: true,
+  displayMode: DisplayMode.FitScreen,
 });
 
 const spaceship = new Spaceship({
