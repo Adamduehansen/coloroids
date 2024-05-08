@@ -39,7 +39,7 @@ export default class Spaceship extends Actor {
       name: "Spaceship",
       color: Color.White,
       collider: Shape.Box(48, 32),
-      collisionType: CollisionType.Fixed,
+      collisionType: CollisionType.Passive,
     });
     this.#idleGraphic = new Sprite({
       image: spritesheetSource,
