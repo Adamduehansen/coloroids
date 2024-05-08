@@ -1,6 +1,6 @@
 import {
-  Actor,
   type ActorArgs,
+  Actor,
   Color,
   Engine,
   Graphic,
@@ -10,8 +10,10 @@ import {
   Animation,
   Vector,
   BoundingBox,
+  Timer,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
+import Bullet from "./Bullet";
 
 const THRUST_SPEED = 10;
 const MAX_SPEED = 500;
@@ -21,12 +23,16 @@ export default class Spaceship extends Actor {
   #speed = 0;
   #idleGraphic: Graphic;
   #thrustGraphic: Graphic;
+  #shootTimer: Timer;
+
+  #canShoot = true;
 
   constructor({ x, y }: Pick<ActorArgs, "x" | "y">) {
     super({
       x: x,
       y: y,
       name: "Spaceship",
+      color: Color.White,
     });
     this.#idleGraphic = new Sprite({
       image: spritesheetSource,
@@ -50,10 +56,18 @@ export default class Spaceship extends Actor {
         },
       ],
     });
+    this.#shootTimer = new Timer({
+      interval: 1000,
+      fcn: () => {
+        this.#canShoot = true;
+        this.#shootTimer.stop();
+      },
+    });
   }
 
-  onInitialize(): void {
+  onInitialize(engine: Engine): void {
     this.graphics.use(this.#idleGraphic);
+    engine.add(this.#shootTimer);
   }
 
   onPreUpdate(engine: Engine<any>): void {
@@ -80,10 +94,6 @@ export default class Spaceship extends Actor {
     } else if (currentY - height > bottom) {
       this.pos.y = top;
     }
-
-    // if (currentY + height > bottom) {
-    //   this.pos.y = top - height;
-    // }
   }
 
   #handleControls(engine: Engine) {
@@ -120,12 +130,17 @@ export default class Spaceship extends Actor {
       this.#setGraphicColors(Color.Green);
     }
 
-    if (engine.input.keyboard.wasPressed(Keys.Space)) {
-      // const bullet = new Bullet({
-      //   x: this.pos.x,
-      //   y: this.pos.y,
-      // });
-      // engine.add(bullet);
+    if (engine.input.keyboard.isHeld(Keys.Space) && this.#canShoot) {
+      this.#canShoot = false;
+      engine.add(
+        new Bullet({
+          x: this.pos.x,
+          y: this.pos.y,
+          color: this.color,
+          rotation: this.rotation,
+        })
+      );
+      this.#shootTimer.start();
     }
   }
 
@@ -138,5 +153,6 @@ export default class Spaceship extends Actor {
   #setGraphicColors(color: Color) {
     this.#idleGraphic.tint = color;
     this.#thrustGraphic.tint = color;
+    this.color = color;
   }
 }
