@@ -1,5 +1,7 @@
 import { Actor, ActorArgs, vec } from "excalibur";
 
+const BULLET_SPEED = 500;
+
 export default class Bullet extends Actor {
   constructor(args: ActorArgs) {
     super({
@@ -11,8 +13,19 @@ export default class Bullet extends Actor {
   }
 
   onInitialize(): void {
-    const vx = Math.cos(this.rotation) * 500;
-    const vy = Math.sin(this.rotation) * 500;
+    const vx = Math.cos(this.rotation) * BULLET_SPEED;
+    const vy = Math.sin(this.rotation) * BULLET_SPEED;
     this.vel = vec(vx, vy);
+  }
+
+  onPreUpdate(): void {
+    this.#killIfOffScreen();
+  }
+
+  #killIfOffScreen() {
+    if (!this.isOffScreen) {
+      return;
+    }
+    this.kill();
   }
 }
