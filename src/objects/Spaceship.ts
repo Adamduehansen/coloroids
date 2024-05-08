@@ -1,6 +1,6 @@
 import {
-  Actor,
   type ActorArgs,
+  Actor,
   Color,
   Engine,
   Graphic,
@@ -8,6 +8,7 @@ import {
   Sprite,
   vec,
   Animation,
+  Timer,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
 import Bullet from "./Bullet";
@@ -20,6 +21,9 @@ export default class Spaceship extends Actor {
   #speed = 0;
   #idleGraphic: Graphic;
   #thrustGraphic: Graphic;
+  #shootTimer: Timer;
+
+  #canShoot = true;
 
   constructor({ x, y }: Pick<ActorArgs, "x" | "y">) {
     super({
@@ -50,10 +54,18 @@ export default class Spaceship extends Actor {
         },
       ],
     });
+    this.#shootTimer = new Timer({
+      interval: 1000,
+      fcn: () => {
+        this.#canShoot = true;
+        this.#shootTimer.stop();
+      },
+    });
   }
 
-  onInitialize(): void {
+  onInitialize(engine: Engine): void {
     this.graphics.use(this.#idleGraphic);
+    engine.add(this.#shootTimer);
   }
 
   onPreUpdate(engine: Engine<any>): void {
@@ -97,14 +109,17 @@ export default class Spaceship extends Actor {
       this.#setGraphicColors(Color.Green);
     }
 
-    if (engine.input.keyboard.wasPressed(Keys.Space)) {
-      const bullet = new Bullet({
-        x: this.pos.x,
-        y: this.pos.y,
-        color: this.color,
-        rotation: this.rotation,
-      });
-      engine.add(bullet);
+    if (engine.input.keyboard.isHeld(Keys.Space) && this.#canShoot) {
+      this.#canShoot = false;
+      engine.add(
+        new Bullet({
+          x: this.pos.x,
+          y: this.pos.y,
+          color: this.color,
+          rotation: this.rotation,
+        })
+      );
+      this.#shootTimer.start();
     }
   }
 
