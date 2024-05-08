@@ -17,10 +17,25 @@ const spaceship = new Spaceship({
 });
 game.add(spaceship);
 
-const asteroid = new Asteroid({
+const asteroid1 = new Asteroid({
   x: game.drawWidth / 2 + 200,
   y: game.drawHeight / 2,
+  color: Color.White,
 });
-game.add(asteroid);
+game.add(asteroid1);
+
+const asteroid2 = new Asteroid({
+  x: game.drawWidth / 2 + 400,
+  y: game.drawHeight / 2,
+  color: Color.White,
+});
+game.add(asteroid2);
+
+const asteroid3 = new Asteroid({
+  x: game.drawWidth / 2 + 600,
+  y: game.drawHeight / 2,
+  color: Color.White,
+});
+game.add(asteroid3);
 
 game.start(loader);

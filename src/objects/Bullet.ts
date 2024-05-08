@@ -1,4 +1,4 @@
-import { Actor, ActorArgs, CollisionType, vec } from "excalibur";
+import { Actor, ActorArgs, Collider, CollisionType, vec } from "excalibur";
 
 const BULLET_SPEED = 500;
 
@@ -23,8 +23,14 @@ export default class Bullet extends Actor {
     this.#killIfOffScreen();
   }
 
-  onCollisionStart(): void {
-    this.kill();
+  onCollisionStart(_self: Collider, other: Collider): void {
+    if (this.#isCollisionWithBullet(other)) {
+      this.kill();
+    }
+  }
+
+  #isCollisionWithBullet(collider: Collider): boolean {
+    return collider.owner.name === "Asteroid";
   }
 
   #killIfOffScreen() {

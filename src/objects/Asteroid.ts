@@ -9,10 +9,9 @@ import {
 import { sourceViews, spritesheetSource } from "../resources";
 
 export default class Asteroid extends Actor {
-  constructor({ x, y }: Pick<ActorArgs, "x" | "y">) {
+  constructor(args: ActorArgs) {
     super({
-      x: x,
-      y: y,
+      ...args,
       name: "Asteroid",
       collisionType: CollisionType.Active,
       collider: Shape.Box(32, 32),

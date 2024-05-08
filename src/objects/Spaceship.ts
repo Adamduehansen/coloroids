@@ -11,6 +11,11 @@ import {
   Vector,
   BoundingBox,
   Timer,
+  Collider,
+  CollisionContact,
+  Side,
+  CollisionType,
+  Shape,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
 import Bullet from "./Bullet";
@@ -20,19 +25,21 @@ const MAX_SPEED = 500;
 const ROTATION_SPEED = 0.025;
 
 export default class Spaceship extends Actor {
-  #speed = 0;
   #idleGraphic: Graphic;
   #thrustGraphic: Graphic;
   #shootTimer: Timer;
 
+  #speed = 0;
+  #lifes = 3;
   #canShoot = true;
 
-  constructor({ x, y }: Pick<ActorArgs, "x" | "y">) {
+  constructor(args: ActorArgs) {
     super({
-      x: x,
-      y: y,
+      ...args,
       name: "Spaceship",
       color: Color.White,
+      collider: Shape.Box(48, 32),
+      collisionType: CollisionType.Fixed,
     });
     this.#idleGraphic = new Sprite({
       image: spritesheetSource,
@@ -74,6 +81,21 @@ export default class Spaceship extends Actor {
     this.#handleControls(engine);
     this.vel = this.#getVelocityByRotation();
     this.#updatePositionOnCollisionWithBoundary(engine.getWorldBounds());
+  }
+
+  onCollisionStart(
+    _self: Collider,
+    other: Collider,
+    _side: Side,
+    _contact: CollisionContact
+  ): void {
+    if (other.owner.name === "Asteroid") {
+      this.#lifes -= 1;
+      this.actions.repeat((context) => {
+        context.fade(0, 200);
+        context.fade(1, 200);
+      }, 3);
+    }
   }
 
   #updatePositionOnCollisionWithBoundary(boundingBox: BoundingBox) {
