@@ -3,7 +3,6 @@ import {
   Actor,
   Color,
   Engine,
-  Graphic,
   Keys,
   Sprite,
   vec,
@@ -25,8 +24,6 @@ const MAX_SPEED = 500;
 const ROTATION_SPEED = 0.025;
 
 export default class Spaceship extends Actor {
-  #idleGraphic: Graphic;
-  #thrustGraphic: Graphic;
   #shootTimer: Timer;
 
   #speed = 0;
@@ -41,28 +38,6 @@ export default class Spaceship extends Actor {
       collider: Shape.Box(48, 32),
       collisionType: CollisionType.Passive,
     });
-    this.#idleGraphic = new Sprite({
-      image: spritesheetSource,
-      sourceView: sourceViews.spaceshipIdle,
-    });
-    this.#thrustGraphic = new Animation({
-      frames: [
-        {
-          graphic: new Sprite({
-            image: spritesheetSource,
-            sourceView: sourceViews.spaceshipIdle,
-          }),
-          duration: 200,
-        },
-        {
-          graphic: new Sprite({
-            image: spritesheetSource,
-            sourceView: sourceViews.spaceshipThrust,
-          }),
-          duration: 500,
-        },
-      ],
-    });
     this.#shootTimer = new Timer({
       interval: 1000,
       fcn: () => {
@@ -73,7 +48,35 @@ export default class Spaceship extends Actor {
   }
 
   onInitialize(engine: Engine): void {
-    this.graphics.use(this.#idleGraphic);
+    this.graphics.add(
+      "idle",
+      new Sprite({
+        image: spritesheetSource,
+        sourceView: sourceViews.spaceshipIdle,
+      })
+    );
+    this.graphics.add(
+      "thrust",
+      new Animation({
+        frames: [
+          {
+            graphic: new Sprite({
+              image: spritesheetSource,
+              sourceView: sourceViews.spaceshipIdle,
+            }),
+            duration: 200,
+          },
+          {
+            graphic: new Sprite({
+              image: spritesheetSource,
+              sourceView: sourceViews.spaceshipThrust,
+            }),
+            duration: 500,
+          },
+        ],
+      })
+    );
+    this.graphics.use("idle");
     engine.add(this.#shootTimer);
   }
 
@@ -129,11 +132,11 @@ export default class Spaceship extends Actor {
 
     if (engine.input.keyboard.isHeld(Keys.Up)) {
       this.#speed = Math.min(this.#speed + THRUST_SPEED, MAX_SPEED);
-      this.graphics.use(this.#thrustGraphic);
+      this.graphics.use("thrust");
     }
 
     if (engine.input.keyboard.wasReleased(Keys.Up)) {
-      this.graphics.use(this.#idleGraphic);
+      this.graphics.use("idle");
     }
 
     if (engine.input.keyboard.isHeld(Keys.Down)) {
@@ -173,8 +176,10 @@ export default class Spaceship extends Actor {
   }
 
   #setGraphicColors(color: Color) {
-    this.#idleGraphic.tint = color;
-    this.#thrustGraphic.tint = color;
+    Object.values(this.graphics.graphics).forEach((graphic) => {
+      graphic.tint = color;
+    });
+
     this.color = color;
   }
 }
