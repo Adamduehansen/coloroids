@@ -8,11 +8,13 @@ import {
   Sprite,
   vec,
   Animation,
+  Vector,
+  BoundingBox,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
 
-const THRUST_SPEED = 2;
-const MAX_SPEED = 100;
+const THRUST_SPEED = 10;
+const MAX_SPEED = 500;
 const ROTATION_SPEED = 0.025;
 
 export default class Spaceship extends Actor {
@@ -56,9 +58,32 @@ export default class Spaceship extends Actor {
 
   onPreUpdate(engine: Engine<any>): void {
     this.#handleControls(engine);
-    const vx = Math.cos(this.rotation) * this.#speed;
-    const vy = Math.sin(this.rotation) * this.#speed;
-    this.vel = vec(vx, vy);
+    this.vel = this.#getVelocityByRotation();
+    this.#updatePositionOnCollisionWithBoundary(engine.getWorldBounds());
+  }
+
+  #updatePositionOnCollisionWithBoundary(boundingBox: BoundingBox) {
+    const { x: currentX, y: currentY } = this.pos;
+    const { top, right, bottom, left } = boundingBox;
+
+    const width = this.graphics.current?.width || 0;
+    const height = this.graphics.current?.height || 0;
+
+    if (currentX + width < left) {
+      this.pos.x = right;
+    } else if (currentX - width > right) {
+      this.pos.x = left;
+    }
+
+    if (currentY + height < top) {
+      this.pos.y = bottom;
+    } else if (currentY - height > bottom) {
+      this.pos.y = top;
+    }
+
+    // if (currentY + height > bottom) {
+    //   this.pos.y = top - height;
+    // }
   }
 
   #handleControls(engine: Engine) {
@@ -102,6 +127,12 @@ export default class Spaceship extends Actor {
       // });
       // engine.add(bullet);
     }
+  }
+
+  #getVelocityByRotation(): Vector {
+    const vx = Math.cos(this.rotation) * this.#speed;
+    const vy = Math.sin(this.rotation) * this.#speed;
+    return vec(vx, vy);
   }
 
   #setGraphicColors(color: Color) {
