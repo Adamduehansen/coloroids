@@ -18,8 +18,8 @@ const spaceship = new Spaceship({
 game.add(spaceship);
 
 const asteroid = new Asteroid({
-  x: 200,
-  y: 200,
+  x: game.drawWidth / 2 + 200,
+  y: game.drawHeight / 2,
 });
 game.add(asteroid);
 

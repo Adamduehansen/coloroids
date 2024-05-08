@@ -1,4 +1,4 @@
-import { Actor, ActorArgs, vec } from "excalibur";
+import { Actor, ActorArgs, CollisionType, vec } from "excalibur";
 
 const BULLET_SPEED = 500;
 
@@ -9,6 +9,7 @@ export default class Bullet extends Actor {
       name: "Bullet",
       width: 10,
       height: 5,
+      collisionType: CollisionType.Active,
     });
   }
 
@@ -20,6 +21,10 @@ export default class Bullet extends Actor {
 
   onPreUpdate(): void {
     this.#killIfOffScreen();
+  }
+
+  onCollisionStart(): void {
+    this.kill();
   }
 
   #killIfOffScreen() {
