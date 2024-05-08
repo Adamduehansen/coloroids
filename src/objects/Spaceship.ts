@@ -10,6 +10,7 @@ import {
   Animation,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
+import Bullet from "./Bullet";
 
 const THRUST_SPEED = 2;
 const MAX_SPEED = 100;
@@ -25,6 +26,7 @@ export default class Spaceship extends Actor {
       x: x,
       y: y,
       name: "Spaceship",
+      color: Color.White,
     });
     this.#idleGraphic = new Sprite({
       image: spritesheetSource,
@@ -96,16 +98,19 @@ export default class Spaceship extends Actor {
     }
 
     if (engine.input.keyboard.wasPressed(Keys.Space)) {
-      // const bullet = new Bullet({
-      //   x: this.pos.x,
-      //   y: this.pos.y,
-      // });
-      // engine.add(bullet);
+      const bullet = new Bullet({
+        x: this.pos.x,
+        y: this.pos.y,
+        color: this.color,
+        rotation: this.rotation,
+      });
+      engine.add(bullet);
     }
   }
 
   #setGraphicColors(color: Color) {
     this.#idleGraphic.tint = color;
     this.#thrustGraphic.tint = color;
+    this.color = color;
   }
 }
