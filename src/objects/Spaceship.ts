@@ -11,13 +11,12 @@ import {
   BoundingBox,
   Timer,
   Collider,
-  CollisionContact,
-  Side,
   CollisionType,
   Shape,
 } from "excalibur";
 import { sourceViews, spritesheetSource } from "../resources";
 import Bullet from "./Bullet";
+import HudManager from "../HudManager";
 
 const THRUST_SPEED = 10;
 const MAX_SPEED = 500;
@@ -86,14 +85,10 @@ export default class Spaceship extends Actor {
     this.#updatePositionOnCollisionWithBoundary(engine.getWorldBounds());
   }
 
-  onCollisionStart(
-    _self: Collider,
-    other: Collider,
-    _side: Side,
-    _contact: CollisionContact
-  ): void {
+  onCollisionStart(_self: Collider, other: Collider): void {
     if (other.owner.name === "Asteroid") {
       this.#lifes -= 1;
+      HudManager.updateLifesText(this.#lifes);
       this.actions.repeat((context) => {
         context.fade(0, 200);
         context.fade(1, 200);
