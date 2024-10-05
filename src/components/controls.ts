@@ -6,6 +6,8 @@ export class ControlsComponent extends ex.Component {
   readonly controlSchema = {
     rotateRight: ex.Keys.D,
     rotateLeft: ex.Keys.A,
+    thust: ex.Keys.W,
+    brake: ex.Keys.S,
   } as const;
 
   isHeld(control: keyof typeof this.controlSchema): boolean | undefined {
