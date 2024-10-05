@@ -3,7 +3,7 @@ import { adaptToRotation, Facing } from "../utils/Facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
 
 const ROTATE_SPEED = .05;
-const MAX_SPEED = 100;
+const MAX_SPEED = 1;
 
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
@@ -29,6 +29,7 @@ export class Spaceship extends ex.Actor {
   override onPreUpdate(engine: ex.Engine, delta: number): void {
     super.onPreUpdate(engine, delta);
     this.handleInput();
+    this.accelerate();
   }
 
   handleInput(): void {
@@ -41,15 +42,18 @@ export class Spaceship extends ex.Actor {
     if (this.controls.isHeld("thust")) {
       this.speed = Math.min(++this.speed, MAX_SPEED);
     } else if (this.controls.isHeld("brake")) {
-      this.speed -= 1;
+      this.speed = Math.max(--this.speed, -1);
+    } else {
+      if (this.speed > 0) {
+        this.speed -= 1;
+      }
     }
-
-    this.vel = this.getVelocityByRotation();
   }
 
-  getVelocityByRotation(): ex.Vector {
-    const vx = Math.cos(this.rotation) * this.speed;
-    const vy = Math.sin(this.rotation) * this.speed;
-    return ex.vec(vx, vy);
+  accelerate(): void {
+    const direction = ex.vec(Math.cos(this.rotation), Math.sin(this.rotation));
+    const normalizedDirection = direction.normalize();
+    const acceleration = normalizedDirection.scale(this.speed);
+    this.vel = this.vel.add(acceleration);
   }
 }
