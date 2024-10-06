@@ -40,13 +40,11 @@ export class Spaceship extends ex.Actor {
     }
 
     if (this.controls.isHeld("thust")) {
-      this.speed = Math.min(++this.speed, MAX_SPEED);
+      this.speed = 5;
     } else if (this.controls.isHeld("brake")) {
-      this.speed = Math.max(--this.speed, -1);
+      this.speed = -5;
     } else {
-      if (this.speed > 0) {
-        this.speed -= 1;
-      }
+      this.speed = 0;
     }
   }
 
