@@ -1,0 +1,13 @@
+
+Gameloop:
+  ☐ Death
+
+Objects:
+  ☐ Asteroid
+  ☐ Bullet
+  ☐ Enemy
+  ☐ Canon - an enemy that is placed on the walls of the level.
+
+Levels:
+  ☐ Level implementation
+  ☐ Unlockabl level
