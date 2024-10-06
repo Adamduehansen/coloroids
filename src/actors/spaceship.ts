@@ -1,6 +1,7 @@
 import * as ex from "excalibur";
 import { adaptToRotation, Facing } from "../utils/Facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
+import { CanonComponent } from "../components/canon.ts";
 
 const ROTATE_SPEED = .05;
 
@@ -10,6 +11,7 @@ type Args = Pick<ex.ActorArgs, "pos"> & {
 
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
+  readonly canon = new CanonComponent();
 
   speed = 0;
 
@@ -23,6 +25,11 @@ export class Spaceship extends ex.Actor {
     });
 
     this.addComponent(this.controls);
+    this.addComponent(this.canon);
+
+    this.canon.events.on("fired", () => {
+      console.log("Fire bullet!");
+    });
   }
 
   override onPreUpdate(engine: ex.Engine, delta: number): void {
@@ -44,6 +51,10 @@ export class Spaceship extends ex.Actor {
       this.speed = -5;
     } else {
       this.speed = 0;
+    }
+
+    if (this.controls.isHeld("fire")) {
+      this.canon.fire();
     }
   }
 

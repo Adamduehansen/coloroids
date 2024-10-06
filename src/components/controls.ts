@@ -8,6 +8,7 @@ export class ControlsComponent extends ex.Component {
     rotateLeft: ex.Keys.A,
     thust: ex.Keys.W,
     brake: ex.Keys.S,
+    fire: ex.Keys.Space,
   } as const;
 
   isHeld(control: keyof typeof this.controlSchema): boolean | undefined {
