@@ -3,7 +3,6 @@ import { adaptToRotation, Facing } from "../utils/Facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
 
 const ROTATE_SPEED = .05;
-const MAX_SPEED = 1;
 
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
