@@ -2,6 +2,7 @@ import * as ex from "excalibur";
 import { adaptToRotation, Facing } from "../utils/Facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
 import { CanonComponent } from "../components/canon.ts";
+import { Bullet } from "./bullet.ts";
 
 const ROTATE_SPEED = .05;
 
@@ -28,7 +29,12 @@ export class Spaceship extends ex.Actor {
     this.addComponent(this.canon);
 
     this.canon.events.on("fired", () => {
-      console.log("Fire bullet!");
+      this.scene?.add(
+        new Bullet({
+          pos: this.pos,
+          rotation: this.rotation,
+        }),
+      );
     });
   }
 
