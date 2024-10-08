@@ -12,7 +12,7 @@ type Args = Pick<ex.ActorArgs, "pos"> & {
 
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
-  readonly canon = new CanonComponent();
+  readonly canon = new CanonComponent(1000);
 
   speed = 0;
 
@@ -60,7 +60,7 @@ export class Spaceship extends ex.Actor {
     }
 
     if (this.controls.isHeld("fire")) {
-      this.canon.fire();
+      this.canon.attemptFire();
     }
   }
 
