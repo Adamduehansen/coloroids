@@ -11,6 +11,17 @@ export class CanonComponent extends ex.Component {
     this.reloadTime = reloadTime;
   }
 
+  *reload(): ReturnType<ex.CoroutineGenerator> {
+    this.isReloading = true;
+    let elapsed = 0;
+
+    while (elapsed < this.reloadTime) {
+      elapsed += yield 1;
+    }
+
+    this.isReloading = false;
+  }
+
   attemptFire(): void {
     if (this.isReloading) {
       return;
@@ -18,6 +29,6 @@ export class CanonComponent extends ex.Component {
 
     this.events.emit("fired");
 
-    this.isReloading = true;
+    ex.coroutine(this.owner!.scene!.engine, this.reload.bind(this));
   }
 }

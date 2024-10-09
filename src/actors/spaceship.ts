@@ -5,6 +5,7 @@ import { CanonComponent } from "../components/canon.ts";
 import { Bullet } from "./bullet.ts";
 
 const ROTATE_SPEED = .05;
+const RELOAD_TIME = 500;
 
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
@@ -12,7 +13,7 @@ type Args = Pick<ex.ActorArgs, "pos"> & {
 
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
-  readonly canon = new CanonComponent(1000);
+  readonly canon = new CanonComponent(RELOAD_TIME);
 
   speed = 0;
 
