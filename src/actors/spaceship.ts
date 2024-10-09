@@ -6,6 +6,7 @@ import { Bullet } from "./bullet.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
+const MAX_SPEED = 200;
 
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
@@ -69,6 +70,6 @@ export class Spaceship extends ex.Actor {
     const direction = ex.vec(Math.cos(this.rotation), Math.sin(this.rotation));
     const normalizedDirection = direction.normalize();
     const acceleration = normalizedDirection.scale(this.speed);
-    this.vel = this.vel.add(acceleration);
+    this.vel = this.vel.add(acceleration).clampMagnitude(MAX_SPEED);
   }
 }
