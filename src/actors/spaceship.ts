@@ -3,6 +3,7 @@ import { adaptToRotation, Facing } from "../utils/Facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
 import { CanonComponent } from "../components/canon.ts";
 import { Bullet } from "./bullet.ts";
+import { AsteroidCollisionGroup } from "../utils/collisionGroups.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
@@ -11,6 +12,10 @@ const MAX_SPEED = 200;
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
 };
+
+const playersCanCollideWith = ex.CollisionGroup.collidesWith([
+  AsteroidCollisionGroup,
+]);
 
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
@@ -27,6 +32,7 @@ export class Spaceship extends ex.Actor {
       rotation: adaptToRotation(args.facing),
       collider: ex.Shape.Box(16, 16),
       collisionType: ex.CollisionType.Active,
+      collisionGroup: playersCanCollideWith,
     });
 
     this.addComponent(this.controls);
