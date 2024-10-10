@@ -11,6 +11,8 @@ export class Bullet extends ex.Actor {
       width: 8,
       height: 4,
       color: ex.Color.Red,
+      collider: ex.Shape.Box(8, 4),
+      collisionType: ex.CollisionType.Active,
     });
 
     const vx = Math.cos(this.rotation) * BULLET_SPEED;

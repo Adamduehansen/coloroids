@@ -25,6 +25,8 @@ export class Spaceship extends ex.Actor {
       height: 16,
       color: ex.Color.Red,
       rotation: adaptToRotation(args.facing),
+      collider: ex.Shape.Box(16, 16),
+      collisionType: ex.CollisionType.Active,
     });
 
     this.addComponent(this.controls);
