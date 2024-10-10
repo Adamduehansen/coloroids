@@ -7,7 +7,7 @@ const engine = new ex.Engine({
 
 const spaceship = new Spaceship({
   pos: ex.vec(100, 100),
-  facing: "right",
+  facing: "up",
 });
 
 engine.add(spaceship);
