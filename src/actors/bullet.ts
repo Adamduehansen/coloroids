@@ -3,6 +3,7 @@ import {
   AsteroidCollisionGroup,
   BulletCollisionGroup,
 } from "../utils/collisionGroups.ts";
+import { ColorComponent } from "../components/color.ts";
 
 const BULLET_SPEED = 300;
 
@@ -24,6 +25,8 @@ export class Bullet extends ex.Actor {
       collisionType: ex.CollisionType.Active,
       collisionGroup: bulletsCanCollideWith,
     });
+
+    this.addComponent(new ColorComponent());
 
     const vx = Math.cos(this.rotation) * BULLET_SPEED;
     const vy = Math.sin(this.rotation) * BULLET_SPEED;

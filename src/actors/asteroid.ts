@@ -1,4 +1,5 @@
 import * as ex from "excalibur";
+import { ColorComponent } from "../components/color.ts";
 
 type Args = Pick<ex.ActorArgs, "pos" | "color">;
 
@@ -20,6 +21,15 @@ export class Asteroid extends ex.Actor {
     contact: ex.CollisionContact,
   ): void {
     super.onCollisionStart(self, other, side, contact);
-    console.log("Asteroid", "On collision start!");
+
+    const colorComponent = other.owner.has(ColorComponent)
+      ? other.owner.get(ColorComponent)
+      : undefined;
+
+    if (colorComponent === undefined) {
+      return;
+    }
+
+    console.log(colorComponent.color);
   }
 }
