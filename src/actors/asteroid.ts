@@ -12,4 +12,14 @@ export class Asteroid extends ex.Actor {
       collisionType: ex.CollisionType.Active,
     });
   }
+
+  override onCollisionStart(
+    self: ex.Collider,
+    other: ex.Collider,
+    side: ex.Side,
+    contact: ex.CollisionContact,
+  ): void {
+    super.onCollisionStart(self, other, side, contact);
+    console.log("Asteroid", "On collision start!");
+  }
 }

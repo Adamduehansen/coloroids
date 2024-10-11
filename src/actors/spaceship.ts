@@ -80,4 +80,14 @@ export class Spaceship extends ex.Actor {
     const acceleration = normalizedDirection.scale(this.speed);
     this.vel = this.vel.add(acceleration).clampMagnitude(MAX_SPEED);
   }
+
+  onCollisionStart(
+    self: ex.Collider,
+    other: ex.Collider,
+    side: ex.Side,
+    contact: ex.CollisionContact,
+  ): void {
+    super.onCollisionStart(self, other, side, contact);
+    console.log("Spaceship", "On collision start!");
+  }
 }

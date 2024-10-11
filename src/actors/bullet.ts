@@ -37,6 +37,6 @@ export class Bullet extends ex.Actor {
     contact: ex.CollisionContact,
   ): void {
     super.onCollisionStart(self, other, side, contact);
-    console.log("On collision start!");
+    this.kill();
   }
 }
