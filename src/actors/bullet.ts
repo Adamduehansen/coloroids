@@ -26,7 +26,7 @@ export class Bullet extends ex.Actor {
       collisionGroup: bulletsCanCollideWith,
     });
 
-    this.addComponent(new ColorComponent());
+    this.addComponent(new ColorComponent(ex.Color.Yellow));
 
     const vx = Math.cos(this.rotation) * BULLET_SPEED;
     const vy = Math.sin(this.rotation) * BULLET_SPEED;
