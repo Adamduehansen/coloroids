@@ -1,5 +1,5 @@
 import * as ex from "excalibur";
-import { ColorComponent } from "../components/color.ts";
+import { PaletteComponent } from "../components/palette.ts";
 
 type Args = Pick<ex.ActorArgs, "pos" | "color">;
 
@@ -22,14 +22,14 @@ export class Asteroid extends ex.Actor {
   ): void {
     super.onCollisionStart(self, other, side, contact);
 
-    const colorComponent = other.owner.has(ColorComponent)
-      ? other.owner.get(ColorComponent)
+    const paletteComponent = other.owner.has(PaletteComponent)
+      ? other.owner.get(PaletteComponent)
       : undefined;
 
-    if (colorComponent === undefined) {
+    if (paletteComponent === undefined) {
       return;
     }
 
-    console.log(colorComponent.color);
+    console.log(paletteComponent.color);
   }
 }
