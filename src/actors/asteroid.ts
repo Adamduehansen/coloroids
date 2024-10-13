@@ -1,43 +1,25 @@
 import * as ex from "excalibur";
 import { PaletteComponent } from "../components/palette.ts";
 
-type Args = Pick<ex.ActorArgs, "pos"> & {
+type Args = Required<Pick<ex.ActorArgs, "pos" | "width" | "height">> & {
   color: ex.Color;
 };
 
-export class Asteroid extends ex.Actor {
+export abstract class Asteroid extends ex.Actor {
   readonly palette: PaletteComponent;
 
   constructor(args: Args) {
     super({
-      ...args,
-      width: 16,
-      height: 16,
-      collider: ex.Shape.Box(16, 16),
+      width: args.width,
+      height: args.height,
       collisionType: ex.CollisionType.Active,
+      collider: ex.Shape.Box(args.width, args.height),
+      pos: args.pos,
+      color: args.color,
     });
 
     this.palette = new PaletteComponent(args.color);
-  }
 
-  override onCollisionStart(
-    self: ex.Collider,
-    other: ex.Collider,
-    side: ex.Side,
-    contact: ex.CollisionContact,
-  ): void {
-    super.onCollisionStart(self, other, side, contact);
-
-    const otherPalette = other.owner.has(PaletteComponent)
-      ? other.owner.get(PaletteComponent)
-      : undefined;
-
-    if (otherPalette === undefined) {
-      return;
-    }
-
-    if (this.palette.isMatching(otherPalette.color)) {
-      this.kill();
-    }
+    this.addComponent(this.palette);
   }
 }

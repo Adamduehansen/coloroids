@@ -4,11 +4,11 @@ Mechanics:
   ✔ Reload time @done(24-10-09 07:55)
 
 Objects:
-  ☐ Asteroid
+  ✔ Asteroid @done(24-10-13 21:17)
   ✔ Bullet @done(24-10-07 07:48)
   ☐ Enemy
   ☐ Canon - an enemy that is placed on the walls of the level.
 
 Levels:
   ☐ Level implementation
-  ☐ Unlockabl level
+  ☐ Unlockable level
