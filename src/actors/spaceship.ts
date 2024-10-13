@@ -55,8 +55,8 @@ export class Spaceship extends ex.Actor {
       );
     });
 
-    this.palette.events.on("change", () => {
-      console.log("TODO: change the sprite of the spaceship");
+    this.palette.events.on("change", (color) => {
+      this.color = color;
     });
   }
 
