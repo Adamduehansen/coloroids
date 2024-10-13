@@ -21,7 +21,7 @@ const playersCanCollideWith = ex.CollisionGroup.collidesWith([
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
   readonly canon = new CanonComponent(RELOAD_TIME);
-  readonly palette = new PaletteComponent(null);
+  readonly palette = new PaletteComponent(ex.Color.Green);
 
   speed = 0;
 

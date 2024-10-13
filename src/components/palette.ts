@@ -5,19 +5,25 @@ export class PaletteComponent extends ex.Component {
 
   events = new ex.EventEmitter<{ change: ex.Color }>();
 
-  #color: ex.Color | null;
+  #color: ex.Color;
 
-  constructor(palette: ex.Color | null) {
+  constructor(palette: ex.Color) {
     super();
     this.#color = palette;
   }
 
-  setColor(color: ex.Color) {
+  get color(): ex.Color {
+    return this.#color;
+  }
+
+  setColor(color: ex.Color): void {
     this.#color = color;
     this.events.emit("change", this.#color);
   }
 
-  get color(): ex.Color | null {
-    return this.#color;
+  isMatching(color: ex.Color): boolean {
+    return this.#color.r === color.r &&
+      this.#color.g === color.g &&
+      this.#color.b === color.b;
   }
 }

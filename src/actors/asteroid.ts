@@ -1,9 +1,13 @@
 import * as ex from "excalibur";
 import { PaletteComponent } from "../components/palette.ts";
 
-type Args = Pick<ex.ActorArgs, "pos" | "color">;
+type Args = Pick<ex.ActorArgs, "pos"> & {
+  color: ex.Color;
+};
 
 export class Asteroid extends ex.Actor {
+  readonly palette: PaletteComponent;
+
   constructor(args: Args) {
     super({
       ...args,
@@ -12,6 +16,8 @@ export class Asteroid extends ex.Actor {
       collider: ex.Shape.Box(16, 16),
       collisionType: ex.CollisionType.Active,
     });
+
+    this.palette = new PaletteComponent(args.color);
   }
 
   override onCollisionStart(
@@ -22,14 +28,16 @@ export class Asteroid extends ex.Actor {
   ): void {
     super.onCollisionStart(self, other, side, contact);
 
-    const paletteComponent = other.owner.has(PaletteComponent)
+    const otherPalette = other.owner.has(PaletteComponent)
       ? other.owner.get(PaletteComponent)
       : undefined;
 
-    if (paletteComponent === undefined) {
+    if (otherPalette === undefined) {
       return;
     }
 
-    console.log(paletteComponent.color);
+    if (this.palette.isMatching(otherPalette.color)) {
+      this.kill();
+    }
   }
 }
