@@ -108,5 +108,7 @@ export class Spaceship extends ex.Actor {
     contact: ex.CollisionContact,
   ): void {
     super.onCollisionStart(self, other, side, contact);
+
+    this.kill();
   }
 }
