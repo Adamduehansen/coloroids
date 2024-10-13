@@ -1,13 +1,14 @@
 
-Mechanics:
-  ☐ Death
-  ✔ Reload time @done(24-10-09 07:55)
-
 Objects:
   ✔ Asteroid @done(24-10-13 21:17)
   ✔ Bullet @done(24-10-07 07:48)
+  ☐ Color combinitions.
   ☐ Enemy
   ☐ Canon - an enemy that is placed on the walls of the level.
+
+Mechanics:
+  ☐ Death
+  ✔ Reload time @done(24-10-09 07:55)
 
 Levels:
   ☐ Level implementation
