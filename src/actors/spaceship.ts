@@ -4,6 +4,7 @@ import { ControlsComponent } from "../components/controls.ts";
 import { CanonComponent } from "../components/canon.ts";
 import { Bullet } from "./bullet.ts";
 import { AsteroidCollisionGroup } from "../utils/collisionGroups.ts";
+import { PaletteComponent } from "../components/palette.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
@@ -20,6 +21,7 @@ const playersCanCollideWith = ex.CollisionGroup.collidesWith([
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
   readonly canon = new CanonComponent(RELOAD_TIME);
+  readonly palette = new PaletteComponent(null);
 
   speed = 0;
 
@@ -37,14 +39,24 @@ export class Spaceship extends ex.Actor {
 
     this.addComponent(this.controls);
     this.addComponent(this.canon);
+    this.addComponent(this.palette);
 
     this.canon.events.on("fired", () => {
+      if (this.palette.color === null) {
+        return;
+      }
+
       this.scene?.add(
         new Bullet({
           pos: this.pos,
           rotation: this.rotation,
+          color: this.palette.color,
         }),
       );
+    });
+
+    this.palette.events.on("change", () => {
+      console.log("TODO: change the sprite of the spaceship");
     });
   }
 
@@ -72,6 +84,11 @@ export class Spaceship extends ex.Actor {
     if (this.controls.isHeld("fire")) {
       this.canon.attemptFire();
     }
+
+    const color = this.controls.getPaletteControl();
+    if (color !== null) {
+      this.palette.setColor(color);
+    }
   }
 
   accelerate(): void {
@@ -81,13 +98,12 @@ export class Spaceship extends ex.Actor {
     this.vel = this.vel.add(acceleration).clampMagnitude(MAX_SPEED);
   }
 
-  onCollisionStart(
+  override onCollisionStart(
     self: ex.Collider,
     other: ex.Collider,
     side: ex.Side,
     contact: ex.CollisionContact,
   ): void {
     super.onCollisionStart(self, other, side, contact);
-    console.log("Spaceship", "On collision start!");
   }
 }

@@ -1,18 +1,23 @@
 import * as ex from "excalibur";
 
-type Palette = ex.Color | null;
-
 export class PaletteComponent extends ex.Component {
   declare owner: ex.Actor;
 
-  #color: Palette;
+  events = new ex.EventEmitter<{ change: void }>();
 
-  constructor(palette: Palette) {
+  #color: ex.Color | null;
+
+  constructor(palette: ex.Color | null) {
     super();
     this.#color = palette;
   }
 
-  get color(): Palette {
+  setColor(color: ex.Color) {
+    this.#color = color;
+    this.events.emit("change");
+  }
+
+  get color(): ex.Color | null {
     return this.#color;
   }
 }

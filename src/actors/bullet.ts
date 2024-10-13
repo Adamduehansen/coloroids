@@ -7,7 +7,9 @@ import { PaletteComponent } from "../components/palette.ts";
 
 const BULLET_SPEED = 300;
 
-type Args = Pick<ex.ActorArgs, "rotation" | "pos">;
+type Args = Pick<ex.ActorArgs, "rotation" | "pos"> & {
+  color: ex.Color;
+};
 
 const bulletsCanCollideWith = ex.CollisionGroup.collidesWith([
   AsteroidCollisionGroup,
@@ -20,7 +22,7 @@ export class Bullet extends ex.Actor {
       ...args,
       width: 8,
       height: 4,
-      color: ex.Color.Red,
+      color: args.color,
       collider: ex.Shape.Box(8, 4),
       collisionType: ex.CollisionType.Active,
       collisionGroup: bulletsCanCollideWith,
