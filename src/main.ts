@@ -1,6 +1,6 @@
 import * as ex from "excalibur";
 import { Spaceship } from "./actors/spaceship.ts";
-import { Asteroid } from "./actors/Asteroid.ts";
+import { Asteroid } from "./actors/asteroid.ts";
 
 const engine = new ex.Engine({
   maxFps: 60,
@@ -9,6 +9,7 @@ const engine = new ex.Engine({
 const spaceship = new Spaceship({
   pos: ex.vec(100, 300),
   facing: "right",
+  color: ex.Color.Green,
 });
 engine.add(spaceship);
 

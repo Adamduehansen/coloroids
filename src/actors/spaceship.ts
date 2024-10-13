@@ -12,6 +12,7 @@ const MAX_SPEED = 200;
 
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
+  color: ex.Color;
 };
 
 const playersCanCollideWith = ex.CollisionGroup.collidesWith([
@@ -21,7 +22,7 @@ const playersCanCollideWith = ex.CollisionGroup.collidesWith([
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
   readonly canon = new CanonComponent(RELOAD_TIME);
-  readonly palette = new PaletteComponent(ex.Color.Green);
+  readonly palette: PaletteComponent;
 
   speed = 0;
 
@@ -30,12 +31,14 @@ export class Spaceship extends ex.Actor {
       ...args,
       width: 16,
       height: 16,
-      color: ex.Color.Red,
+      color: args.color,
       rotation: adaptToRotation(args.facing),
       collider: ex.Shape.Box(16, 16),
       collisionType: ex.CollisionType.Active,
       collisionGroup: playersCanCollideWith,
     });
+
+    this.palette = new PaletteComponent(args.color);
 
     this.addComponent(this.controls);
     this.addComponent(this.canon);
