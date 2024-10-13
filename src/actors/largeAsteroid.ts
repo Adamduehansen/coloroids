@@ -33,6 +33,10 @@ export class LargeAsteroid extends Asteroid {
       return;
     }
 
+    if (!this.palette.isMatching(otherPalette.color)) {
+      return;
+    }
+
     const asteroidSpawn1 = new SmallAsteroid({
       color: ex.Color.Red,
       pos: this.pos,
