@@ -17,7 +17,7 @@ export class PaletteComponent extends ex.Component {
   }
 
   setColor(color: ex.Color): void {
-    this.#color = color;
+    this.#color = this.#addColors(this.#color, color);
     this.events.emit("change", this.#color);
   }
 
@@ -25,5 +25,13 @@ export class PaletteComponent extends ex.Component {
     return this.#color.r === color.r &&
       this.#color.g === color.g &&
       this.#color.b === color.b;
+  }
+
+  #addColors(color1: ex.Color, color2: ex.Color) {
+    const r = Math.min(color1.r + color2.r, 255);
+    const g = Math.min(color1.g + color2.g, 255);
+    const b = Math.min(color1.b + color2.b, 255);
+
+    return new ex.Color(r, g, b);
   }
 }
