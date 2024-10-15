@@ -13,7 +13,10 @@ export class SmallAsteroid extends Asteroid {
       height: 16,
       color: args.color,
       pos: args.pos,
+      vel: ex.vec(-30, 0),
     });
+
+    this.body.mass = 1;
   }
 
   override onCollisionStart(

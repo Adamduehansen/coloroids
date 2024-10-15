@@ -28,6 +28,8 @@ export class Bullet extends ex.Actor {
       collisionGroup: bulletsCanCollideWith,
     });
 
+    this.body.mass = 0.1;
+
     this.addComponent(new PaletteComponent(args.color));
 
     const vx = Math.cos(this.rotation) * BULLET_SPEED;

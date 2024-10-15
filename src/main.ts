@@ -5,6 +5,10 @@ import { LargeAsteroid } from "./actors/largeAsteroid.ts";
 
 const engine = new ex.Engine({
   maxFps: 60,
+  physics: {
+    solver: ex.SolverStrategy.Realistic,
+    gravity: ex.vec(0, 0),
+  },
 });
 
 const spaceship = new Spaceship({
@@ -15,13 +19,13 @@ const spaceship = new Spaceship({
 engine.add(spaceship);
 
 const smallAsteroid = new SmallAsteroid({
-  pos: ex.vec(300, 300),
+  pos: ex.vec(500, 300),
   color: ex.Color.Green,
 });
 engine.add(smallAsteroid);
 
 const largeAsteroid = new LargeAsteroid({
-  pos: ex.vec(200, 300),
+  pos: ex.vec(400, 300),
   color: ex.Color.Yellow,
 });
 

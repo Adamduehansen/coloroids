@@ -14,7 +14,10 @@ export class LargeAsteroid extends Asteroid {
       height: 32,
       color: color,
       pos: pos,
+      vel: ex.vec(50, 0),
     });
+
+    this.body.mass = 2;
   }
 
   override onCollisionStart(
