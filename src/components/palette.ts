@@ -3,7 +3,7 @@ import * as ex from "excalibur";
 export class PaletteComponent extends ex.Component {
   declare owner: ex.Actor;
 
-  events = new ex.EventEmitter<{ change: ex.Color }>();
+  events = new ex.EventEmitter<{ onChange: ex.Color }>();
 
   #color: ex.Color;
 
@@ -18,7 +18,7 @@ export class PaletteComponent extends ex.Component {
 
   setColor(color: ex.Color): void {
     this.#color = this.#addColors(this.#color, color);
-    this.events.emit("change", this.#color);
+    this.events.emit("onChange", this.#color);
   }
 
   isMatching(color: ex.Color): boolean {

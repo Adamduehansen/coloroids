@@ -58,7 +58,7 @@ export class Spaceship extends ex.Actor {
       );
     });
 
-    this.palette.events.on("change", (color) => {
+    this.palette.events.on("onChange", (color) => {
       this.color = color;
     });
   }
