@@ -4,12 +4,15 @@ export class PaletteComponent extends ex.Component {
   declare owner: ex.Actor;
 
   events = new ex.EventEmitter<{ onChange: ex.Color }>();
+  #isColorMix = false;
 
+  #canCombineColor: boolean;
   #color: ex.Color;
 
-  constructor(palette: ex.Color) {
+  constructor(color: ex.Color, canCombineColor: boolean = false) {
     super();
-    this.#color = palette;
+    this.#color = color;
+    this.#canCombineColor = canCombineColor;
   }
 
   get color(): ex.Color {
@@ -17,7 +20,18 @@ export class PaletteComponent extends ex.Component {
   }
 
   setColor(color: ex.Color): void {
-    this.#color = this.#addColors(this.#color, color);
+    if (this.isMatching(color)) {
+      return;
+    }
+
+    if (this.#canCombineColor === false || this.#isColorMix === true) {
+      this.#color = color;
+      this.#isColorMix = false;
+    } else {
+      this.#color = this.#mixColors(this.#color, color);
+      this.#isColorMix = true;
+    }
+
     this.events.emit("onChange", this.#color);
   }
 
@@ -27,7 +41,7 @@ export class PaletteComponent extends ex.Component {
       this.#color.b === color.b;
   }
 
-  #addColors(color1: ex.Color, color2: ex.Color) {
+  #mixColors(color1: ex.Color, color2: ex.Color) {
     const r = Math.min(color1.r + color2.r, 255);
     const g = Math.min(color1.g + color2.g, 255);
     const b = Math.min(color1.b + color2.b, 255);

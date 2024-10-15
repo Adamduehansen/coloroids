@@ -38,7 +38,7 @@ export class Spaceship extends ex.Actor {
       collisionGroup: playersCanCollideWith,
     });
 
-    this.palette = new PaletteComponent(args.color);
+    this.palette = new PaletteComponent(args.color, true);
 
     this.addComponent(this.controls);
     this.addComponent(this.canon);
