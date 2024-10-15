@@ -1,7 +1,7 @@
 import * as ex from "excalibur";
 
 export class CanonComponent extends ex.Component {
-  events = new ex.EventEmitter<{ fired: void }>();
+  events = new ex.EventEmitter<{ onFire: void }>();
   isReloading = false;
 
   reloadTime: number;
@@ -27,7 +27,7 @@ export class CanonComponent extends ex.Component {
       return;
     }
 
-    this.events.emit("fired");
+    this.events.emit("onFire");
 
     ex.coroutine(this.owner!.scene!.engine, this.reload.bind(this));
   }

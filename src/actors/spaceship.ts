@@ -44,7 +44,7 @@ export class Spaceship extends ex.Actor {
     this.addComponent(this.canon);
     this.addComponent(this.palette);
 
-    this.canon.events.on("fired", () => {
+    this.canon.events.on("onFire", () => {
       if (this.palette.color === null) {
         return;
       }
