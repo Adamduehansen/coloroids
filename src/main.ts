@@ -21,12 +21,14 @@ engine.add(spaceship);
 const smallAsteroid = new SmallAsteroid({
   pos: ex.vec(500, 300),
   color: ex.Color.Green,
+  vel: ex.vec(-30, 0),
 });
 engine.add(smallAsteroid);
 
 const largeAsteroid = new LargeAsteroid({
   pos: ex.vec(400, 300),
   color: ex.Color.Yellow,
+  vel: ex.vec(50, 0),
 });
 
 engine.add(largeAsteroid);

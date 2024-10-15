@@ -4,16 +4,23 @@ import { Asteroid } from "./asteroid.ts";
 
 type Args = Required<Pick<ex.ActorArgs, "pos">> & {
   color: ex.Color;
+  vel?: ex.Vector;
 };
 
+function getRandomVel(): ex.Vector {
+  return ex.vec(
+    ex.randomIntInRange(-50, 50),
+    ex.randomIntInRange(-50, 50),
+  );
+}
+
 export class SmallAsteroid extends Asteroid {
-  constructor(args: Args) {
+  constructor({ vel = getRandomVel(), ...rest }: Args) {
     super({
+      ...rest,
+      vel: vel,
       width: 16,
       height: 16,
-      color: args.color,
-      pos: args.pos,
-      vel: ex.vec(-30, 0),
     });
 
     this.body.mass = 1;

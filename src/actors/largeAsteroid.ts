@@ -3,18 +3,16 @@ import { PaletteComponent } from "../components/palette.ts";
 import { SmallAsteroid } from "./smallAsteroid.ts";
 import { Asteroid } from "./asteroid.ts";
 
-type Args = Required<Pick<ex.ActorArgs, "pos">> & {
+type Args = Required<Pick<ex.ActorArgs, "pos" | "vel">> & {
   color: ex.Color;
 };
 
 export class LargeAsteroid extends Asteroid {
-  constructor({ color, pos }: Args) {
+  constructor(args: Args) {
     super({
+      ...args,
       width: 32,
       height: 32,
-      color: color,
-      pos: pos,
-      vel: ex.vec(50, 0),
     });
 
     this.body.mass = 2;
