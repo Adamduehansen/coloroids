@@ -2,12 +2,12 @@
 Objects:
   ✔ Asteroid @done(24-10-13 21:17)
   ✔ Bullet @done(24-10-07 07:48)
-  ☐ Color combinitions.
+  ✔ Color combinitions. @done(24-10-16 07:22)
   ☐ Enemy
   ☐ Canon - an enemy that is placed on the walls of the level.
 
 Mechanics:
-  ☐ Death
+  ✔ Death @done(24-10-16 07:22)
   ✔ Reload time @done(24-10-09 07:55)
 
 Levels:
