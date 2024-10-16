@@ -5,6 +5,8 @@ import { CanonComponent } from "../components/canon.ts";
 import { Bullet } from "./bullet.ts";
 import { AsteroidCollisionGroup } from "../utils/collisionGroups.ts";
 import { PaletteComponent } from "../components/palette.ts";
+import { AnimationComponent } from "../components/animation.ts";
+import { Resources } from "../utils/resources.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
@@ -19,20 +21,40 @@ const playersCanCollideWith = ex.CollisionGroup.collidesWith([
   AsteroidCollisionGroup,
 ]);
 
+const spriteSheet = ex.SpriteSheet.fromImageSource({
+  image: Resources.img.spaceship,
+  grid: {
+    rows: 1,
+    columns: 2,
+    spriteHeight: 16,
+    spriteWidth: 16,
+  },
+  spacing: {
+    margin: {
+      x: 1,
+    },
+  },
+});
+
 export class Spaceship extends ex.Actor {
   readonly controls = new ControlsComponent();
   readonly canon = new CanonComponent(RELOAD_TIME);
   readonly palette: PaletteComponent;
+  readonly animations = new AnimationComponent({
+    idle: spriteSheet.getSprite(0, 0, {
+      rotation: 90 * Math.PI / 180,
+    }),
+    thrust: spriteSheet.getSprite(1, 0),
+  });
 
   speed = 0;
 
-  constructor(args: Args) {
+  constructor({ color, ...rest }: Args) {
     super({
-      ...args,
+      ...rest,
       width: 16,
       height: 16,
-      color: args.color,
-      rotation: adaptToRotation(args.facing),
+      rotation: adaptToRotation(rest.facing),
       collider: ex.Shape.Box(16, 16),
       collisionType: ex.CollisionType.Active,
       collisionGroup: playersCanCollideWith,
@@ -40,11 +62,14 @@ export class Spaceship extends ex.Actor {
 
     this.body.mass = 0.5;
 
-    this.palette = new PaletteComponent(args.color, true);
+    this.palette = new PaletteComponent(color, true);
 
     this.addComponent(this.controls);
     this.addComponent(this.canon);
     this.addComponent(this.palette);
+    this.addComponent(this.animations);
+
+    this.animations.set("idle");
 
     this.canon.events.on("onFire", () => {
       if (this.palette.color === null) {
@@ -61,7 +86,7 @@ export class Spaceship extends ex.Actor {
     });
 
     this.palette.events.on("onChange", (color) => {
-      this.color = color;
+      // this.color = color;
     });
   }
 

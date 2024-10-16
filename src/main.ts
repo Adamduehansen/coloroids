@@ -2,9 +2,11 @@ import * as ex from "excalibur";
 import { Spaceship } from "./actors/spaceship.ts";
 import { SmallAsteroid } from "./actors/smallAsteroid.ts";
 import { LargeAsteroid } from "./actors/largeAsteroid.ts";
+import { loader } from "./utils/resources.ts";
 
 const engine = new ex.Engine({
   maxFps: 60,
+  suppressPlayButton: true,
   physics: {
     solver: ex.SolverStrategy.Realistic,
     gravity: ex.vec(0, 0),
@@ -33,4 +35,4 @@ const largeAsteroid = new LargeAsteroid({
 
 engine.add(largeAsteroid);
 
-await engine.start();
+await engine.start(loader);
