@@ -18,3 +18,4 @@ Levels:
 
 More work:
   ☐ Asteroids should not stop moving. They will on collision with walls.
+  ☐ Background should be black and emulate starts.
