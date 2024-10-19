@@ -9,7 +9,12 @@ Objects:
 Mechanics:
   ✔ Death @done(24-10-16 07:22)
   ✔ Reload time @done(24-10-09 07:55)
+  ✔ Camera @done(24-10-19 09:49)
+  ☐ Camera lock to level corners
 
 Levels:
-  ☐ Level implementation
+  ✔ Level implementation @done(24-10-19 09:45)
   ☐ Unlockable level
+
+More work:
+  ☐ Asteroids should not stop moving. They will on collision with walls.

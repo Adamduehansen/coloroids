@@ -35,8 +35,6 @@ const largeAsteroid = new LargeAsteroid({
 engine.add(largeAsteroid);
 
 await engine.start(loader);
-
 tiledMap.addToScene(engine.currentScene);
-
-console.log(engine.drawWidth);
-console.log(engine.drawHeight);
+engine.currentScene.camera.strategy.lockToActor(spaceship);
+engine.currentScene.camera.zoom = 1.5;
