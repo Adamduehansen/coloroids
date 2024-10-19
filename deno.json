@@ -5,6 +5,7 @@
     "serve": "deno run --allow-net --allow-read https://deno.land/std@0.157.0/http/file_server.ts dist/"
   },
   "imports": {
+    "@excaliburjs/plugin-tiled": "npm:@excaliburjs/plugin-tiled@^0.29.2",
     "excalibur": "npm:excalibur@^0.29.3",
     "vite": "npm:vite@^5.4.8"
   },

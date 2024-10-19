@@ -2,7 +2,7 @@ import * as ex from "excalibur";
 import { Spaceship } from "./actors/spaceship.ts";
 import { SmallAsteroid } from "./actors/smallAsteroid.ts";
 import { LargeAsteroid } from "./actors/largeAsteroid.ts";
-import { loader } from "./utils/resources.ts";
+import { loader, tiledMap } from "./utils/resources.ts";
 
 const engine = new ex.Engine({
   maxFps: 60,
@@ -32,7 +32,11 @@ const largeAsteroid = new LargeAsteroid({
   color: ex.Color.Yellow,
   vel: ex.vec(50, 0),
 });
-
 engine.add(largeAsteroid);
 
 await engine.start(loader);
+
+tiledMap.addToScene(engine.currentScene);
+
+console.log(engine.drawWidth);
+console.log(engine.drawHeight);
