@@ -15,7 +15,8 @@ export class LargeAsteroid extends Asteroid {
       height: 32,
     });
 
-    this.body.mass = 2;
+    this.body.mass = 1;
+    this.body.bounciness = 1;
   }
 
   override onCollisionStart(

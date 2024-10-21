@@ -24,6 +24,7 @@ export class SmallAsteroid extends Asteroid {
     });
 
     this.body.mass = 1;
+    this.body.bounciness = 1;
   }
 
   override onCollisionStart(

@@ -13,6 +13,7 @@ export class Wall extends ex.Actor {
       color: ex.Color.Gray,
     });
 
-    this.body.bounciness = 2;
+    this.body.mass = 1;
+    this.body.bounciness = 1;
   }
 }
