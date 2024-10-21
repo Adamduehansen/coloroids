@@ -3,6 +3,7 @@ import { Spaceship } from "./actors/spaceship.ts";
 import { SmallAsteroid } from "./actors/smallAsteroid.ts";
 import { LargeAsteroid } from "./actors/largeAsteroid.ts";
 import { loader, tiledMap } from "./utils/resources.ts";
+import { Wall } from "./actors/Wall.ts";
 
 const engine = new ex.Engine({
   maxFps: 60,
@@ -34,7 +35,12 @@ const largeAsteroid = new LargeAsteroid({
 });
 engine.add(largeAsteroid);
 
+const wall = new Wall({
+  pos: ex.vec(600, 300),
+});
+engine.add(wall);
+
 await engine.start(loader);
 tiledMap.addToScene(engine.currentScene);
-engine.currentScene.camera.strategy.lockToActor(spaceship);
-engine.currentScene.camera.zoom = 1.5;
+// engine.currentScene.camera.strategy.lockToActor(spaceship);
+// engine.currentScene.camera.zoom = 1.5;
