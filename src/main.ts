@@ -8,6 +8,7 @@ const engine = new ex.Engine({
   maxFps: 60,
   suppressPlayButton: true,
   displayMode: ex.DisplayMode.FillScreen,
+  backgroundColor: ex.Color.Black,
   physics: {
     solver: ex.SolverStrategy.Realistic,
     gravity: ex.vec(0, 0),
