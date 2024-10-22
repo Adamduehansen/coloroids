@@ -21,6 +21,7 @@ export class LevelScene extends ex.Scene {
         height: props.object?.tiledObject?.height ?? 100,
         collisionType: ex.CollisionType.PreventCollision,
         z: props.layer.order ?? 0,
+        color: ex.Color.White,
       });
     },
   };
