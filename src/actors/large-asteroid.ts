@@ -1,6 +1,6 @@
 import * as ex from "excalibur";
 import { PaletteComponent } from "../components/palette.ts";
-import { SmallAsteroid } from "./smallAsteroid.ts";
+import { SmallAsteroid } from "./small-asteroid.ts";
 import { Asteroid } from "./asteroid.ts";
 
 type Args = Required<Pick<ex.ActorArgs, "pos" | "vel">> & {

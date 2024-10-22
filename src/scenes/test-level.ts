@@ -2,9 +2,9 @@ import * as ex from "excalibur";
 import { Resources } from "../utils/resources.ts";
 import { LevelScene } from "./level-scene.ts";
 import { Spaceship } from "../actors/spaceship.ts";
-import { SmallAsteroid } from "../actors/smallAsteroid.ts";
-import { LargeAsteroid } from "../actors/largeAsteroid.ts";
-import { Wall } from "../actors/Wall.ts";
+import { SmallAsteroid } from "../actors/small-asteroid.ts";
+import { LargeAsteroid } from "../actors/large-asteroid.ts";
+import { Wall } from "../actors/wall.ts";
 
 export class TestLevel extends LevelScene {
   constructor() {

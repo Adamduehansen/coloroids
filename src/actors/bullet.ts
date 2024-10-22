@@ -2,7 +2,7 @@ import * as ex from "excalibur";
 import {
   AsteroidCollisionGroup,
   BulletCollisionGroup,
-} from "../utils/collisionGroups.ts";
+} from "../utils/collision-groups.ts";
 import { PaletteComponent } from "../components/palette.ts";
 
 const BULLET_SPEED = 300;

@@ -49,6 +49,6 @@
 </data>
  </layer>
  <objectgroup id="3" name="Texts">
-  <object id="73" template="templates/Text.tx" type="Text" x="128" y="144"/>
+  <object id="73" template="templates/text.tx" type="Text" x="128" y="144"/>
  </objectgroup>
 </map>
