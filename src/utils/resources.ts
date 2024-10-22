@@ -5,9 +5,12 @@ export const Resources = {
   img: {
     spaceship: new ex.ImageSource("/img/spaceship.png"),
   },
+  tiled: {
+    testMap: new TiledResource("/maps/test-level.tmx"),
+  },
 } as const;
 
-export const tiledMap = new TiledResource("/maps/test-level.tmx");
-
-export const loader = new ex.Loader([...Object.values(Resources.img)]);
-loader.addResource(tiledMap);
+export const loader = new ex.Loader([
+  ...Object.values(Resources.img),
+  ...Object.values(Resources.tiled),
+]);

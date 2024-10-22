@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="73">
  <tileset firstgid="1" source="../tilesets/environment.tsx"/>
- <layer id="1" name="Walls" width="50" height="40">
+ <layer id="1" name="Walls" class="walls" width="50" height="40">
   <properties>
    <property name="solid" type="bool" value="true"/>
   </properties>
@@ -48,4 +48,9 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
+ <objectgroup id="3" name="Texts">
+  <object id="72" x="160" y="160">
+   <point/>
+  </object>
+ </objectgroup>
 </map>
