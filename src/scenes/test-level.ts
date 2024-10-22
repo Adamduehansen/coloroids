@@ -4,7 +4,6 @@ import { LevelScene } from "./level-scene.ts";
 import { Spaceship } from "../actors/spaceship.ts";
 import { SmallAsteroid } from "../actors/small-asteroid.ts";
 import { LargeAsteroid } from "../actors/large-asteroid.ts";
-import { Wall } from "../actors/wall.ts";
 
 export class TestLevel extends LevelScene {
   constructor() {
@@ -35,11 +34,6 @@ export class TestLevel extends LevelScene {
       vel: ex.vec(50, 0),
     });
     engine.add(largeAsteroid);
-
-    const wall = new Wall({
-      pos: ex.vec(600, 300),
-    });
-    engine.add(wall);
 
     engine.currentScene.camera.strategy.lockToActor(spaceship);
     engine.currentScene.camera.zoom = 1.5;
