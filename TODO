@@ -1,23 +1,25 @@
+Sprint 1 (october 2024):
+  ☐ New background
+  ☐ On-screen help text
+  ☐ Spawn points for asteroids in Tiled.
+  ☐ Color reflected through UI.
+  ☐ Level Completion
+  ☐ Configuration to disable canon.
+  ☐ A few levels
 
-Objects:
-  ✔ Asteroid @done(24-10-13 21:17)
-  ✔ Bullet @done(24-10-07 07:48)
-  ✔ Color combinitions. @done(24-10-16 07:22)
+Backlog:
   ☐ Enemy
   ☐ Canon - an enemy that is placed on the walls of the level.
-  ☐ On-screen help text
-  ☐ Color reflected in HUD
-
-Mechanics:
-  ✔ Death @done(24-10-16 07:22)
-  ✔ Reload time @done(24-10-09 07:55)
-  ✔ Camera @done(24-10-19 09:49)
+  ☐ Specific regions that requires a colored shield.
   ☐ Camera lock to level corners
+  ☐ More levels.
 
-Levels:
-  ✔ Level implementation @done(24-10-19 09:45)
-  ☐ Unlockable level
-
-More work:
-  ✔ Asteroids should not stop moving. They will on collision with walls. @done(24-10-21 17:27)
-  ☐ Background should be black and emulate starts.
+Archive:
+  ✔ Asteroid @done(24-10-13 21:17) @project(Objects)
+  ✔ Bullet @done(24-10-07 07:48) @project(Objects)
+  ✔ Color combinitions. @done(24-10-16 07:22) @project(Objects)
+  ✔ Death @done(24-10-16 07:22) @project(Mechanics)
+  ✔ Reload time @done(24-10-09 07:55) @project(Mechanics)
+  ✔ Camera @done(24-10-19 09:49) @project(Mechanics)
+  ✔ Level implementation @done(24-10-19 09:45) @project(Levels)
+  ✔ Asteroids should not stop moving. They will on collision with walls. @done(24-10-21 17:27) @project(More work)
