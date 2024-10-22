@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object type="Text" width="80.2344" height="18.8438">
+  <text wrap="1">Hello World</text>
+ </object>
+</template>

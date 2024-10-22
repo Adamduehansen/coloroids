@@ -19,6 +19,8 @@ export class LevelScene extends ex.Scene {
         text: props.object?.tiledObject?.text?.text ?? "",
         width: props.object?.tiledObject?.width ?? 100,
         height: props.object?.tiledObject?.height ?? 100,
+        collisionType: ex.CollisionType.PreventCollision,
+        z: props.layer.order ?? 0,
       });
     },
   };
