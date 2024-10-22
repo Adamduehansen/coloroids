@@ -5,6 +5,8 @@ Objects:
   ✔ Color combinitions. @done(24-10-16 07:22)
   ☐ Enemy
   ☐ Canon - an enemy that is placed on the walls of the level.
+  ☐ On-screen help text
+  ☐ Color reflected in HUD
 
 Mechanics:
   ✔ Death @done(24-10-16 07:22)
@@ -17,5 +19,5 @@ Levels:
   ☐ Unlockable level
 
 More work:
-  ☐ Asteroids should not stop moving. They will on collision with walls.
+  ✔ Asteroids should not stop moving. They will on collision with walls. @done(24-10-21 17:27)
   ☐ Background should be black and emulate starts.
