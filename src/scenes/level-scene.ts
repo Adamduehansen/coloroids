@@ -2,6 +2,7 @@ import * as ex from "excalibur";
 import type { FactoryProps, TiledResource } from "@excaliburjs/plugin-tiled";
 import { SmallAsteroid } from "../actors/small-asteroid.ts";
 import { LargeAsteroid } from "../actors/large-asteroid.ts";
+import { Spaceship } from "../actors/spaceship.ts";
 
 interface Args {
   tilemap: TiledResource;
@@ -49,6 +50,13 @@ export class LevelScene extends ex.Scene {
         pos: props.worldPos,
       });
     },
+    Spaceship: function (props): ex.Actor {
+      return new Spaceship({
+        pos: props.worldPos,
+        facing: "right",
+        color: ex.Color.Green,
+      });
+    },
   };
 
   constructor({ tilemap }: Args) {
@@ -63,5 +71,20 @@ export class LevelScene extends ex.Scene {
   override onInitialize(engine: ex.Engine): void {
     super.onInitialize(engine);
     this.#tilemap.addToScene(this);
+    this.#setupCamera();
+  }
+
+  #isSpaceship(entity: ex.Entity): entity is Spaceship {
+    return entity instanceof Spaceship;
+  }
+
+  #setupCamera(): void {
+    const spaceship = this.entities.find(this.#isSpaceship);
+    if (spaceship === undefined) {
+      return;
+    }
+
+    this.camera.strategy.lockToActor(spaceship);
+    this.camera.zoom = 1.5;
   }
 }
