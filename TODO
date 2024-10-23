@@ -4,6 +4,7 @@ Sprint 1 (october 2024):
   ✔ Spawn points for asteroids in Tiled. @done(24-10-23 07:01)
   ✔ Spawn points for spaceship in Tiled. @done(24-10-23 07:12)
   ☐ Color reflected through UI.
+  ☐ Spaceship animation on thrust forward and backward.
   ☐ Level Completion
   ☐ Configuration to disable canon.
   ☐ A few levels
