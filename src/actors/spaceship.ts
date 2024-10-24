@@ -25,7 +25,7 @@ const spriteSheet = ex.SpriteSheet.fromImageSource({
   image: Resources.img.spaceship,
   grid: {
     rows: 1,
-    columns: 2,
+    columns: 7,
     spriteHeight: 16,
     spriteWidth: 16,
   },
@@ -44,11 +44,28 @@ export class Spaceship extends ex.Actor {
     idle: spriteSheet.getSprite(0, 0, {
       rotation: 90 * Math.PI / 180,
     }),
-    thrust: spriteSheet.getSprite(1, 0),
+    thrust: ex.Animation.fromSpriteSheetCoordinates({
+      spriteSheet: spriteSheet,
+      frameCoordinates: [
+        { x: 1, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+        { x: 2, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+        { x: 3, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+      ],
+    }),
+    retracting: ex.Animation.fromSpriteSheetCoordinates({
+      spriteSheet: spriteSheet,
+      frameCoordinates: [
+        { x: 4, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+        { x: 5, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+        { x: 6, y: 0, options: { rotation: 90 * Math.PI / 180 } },
+      ],
+    }),
   });
   readonly canonColor: ex.Actor;
 
   speed = 0;
+  #isThrusting = false;
+  #isRetracting = false;
 
   constructor({ color, ...rest }: Args) {
     super({
@@ -104,6 +121,11 @@ export class Spaceship extends ex.Actor {
     this.accelerate();
   }
 
+  override onPostUpdate(engine: ex.Engine, delta: number): void {
+    super.onPostUpdate(engine, delta);
+    this.#handleAnimation();
+  }
+
   handleInput(): void {
     if (this.controls.isHeld("rotateRight")) {
       this.rotation += ROTATE_SPEED;
@@ -113,10 +135,14 @@ export class Spaceship extends ex.Actor {
 
     if (this.controls.isHeld("thust")) {
       this.speed = 5;
+      this.#isThrusting = true;
     } else if (this.controls.isHeld("brake")) {
       this.speed = -5;
+      this.#isRetracting = true;
     } else {
       this.speed = 0;
+      this.#isThrusting = false;
+      this.#isRetracting = false;
     }
 
     if (this.controls.isHeld("fire")) {
@@ -134,6 +160,16 @@ export class Spaceship extends ex.Actor {
     const normalizedDirection = direction.normalize();
     const acceleration = normalizedDirection.scale(this.speed);
     this.vel = this.vel.add(acceleration).clampMagnitude(MAX_SPEED);
+  }
+
+  #handleAnimation() {
+    if (this.#isThrusting) {
+      this.animations.set("thrust");
+    } else if (this.#isRetracting) {
+      this.animations.set("retracting");
+    } else {
+      this.animations.set("idle");
+    }
   }
 
   override onCollisionStart(
