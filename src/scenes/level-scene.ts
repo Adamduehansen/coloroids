@@ -85,6 +85,6 @@ export class LevelScene extends ex.Scene {
     }
 
     this.camera.strategy.lockToActor(spaceship);
-    this.camera.zoom = 1.5;
+    this.camera.zoom = 2;
   }
 }

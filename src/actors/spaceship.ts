@@ -46,6 +46,7 @@ export class Spaceship extends ex.Actor {
     }),
     thrust: spriteSheet.getSprite(1, 0),
   });
+  readonly canonColor: ex.Actor;
 
   speed = 0;
 
@@ -69,6 +70,13 @@ export class Spaceship extends ex.Actor {
     this.addComponent(this.palette);
     this.addComponent(this.animations);
 
+    this.canonColor = new ex.Actor({
+      width: 8,
+      height: 2,
+      color: color,
+      collisionType: ex.CollisionType.PreventCollision,
+    }), this.addChild(this.canonColor);
+
     this.animations.set("idle");
 
     this.canon.events.on("onFire", () => {
@@ -86,7 +94,7 @@ export class Spaceship extends ex.Actor {
     });
 
     this.palette.events.on("onChange", (color) => {
-      // this.color = color;
+      this.canonColor.color = color;
     });
   }
 
