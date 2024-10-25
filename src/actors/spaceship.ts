@@ -3,7 +3,10 @@ import { adaptToRotation, Facing } from "../utils/facing.ts";
 import { ControlsComponent } from "../components/controls.ts";
 import { CanonComponent } from "../components/canon.ts";
 import { Bullet } from "./bullet.ts";
-import { AsteroidCollisionGroup } from "../utils/collision-groups.ts";
+import {
+  AsteroidCollisionGroup,
+  GoalCollisionGroup,
+} from "../utils/collision-groups.ts";
 import { PaletteComponent } from "../components/palette.ts";
 import { AnimationComponent } from "../components/animation.ts";
 import { Resources } from "../utils/resources.ts";
@@ -19,6 +22,7 @@ type Args = Pick<ex.ActorArgs, "pos"> & {
 
 const playersCanCollideWith = ex.CollisionGroup.collidesWith([
   AsteroidCollisionGroup,
+  GoalCollisionGroup,
 ]);
 
 const spriteSheet = ex.SpriteSheet.fromImageSource({

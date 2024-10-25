@@ -3,6 +3,7 @@ import type { FactoryProps, TiledResource } from "@excaliburjs/plugin-tiled";
 import { SmallAsteroid } from "../actors/small-asteroid.ts";
 import { LargeAsteroid } from "../actors/large-asteroid.ts";
 import { Spaceship } from "../actors/spaceship.ts";
+import { Goal } from "../actors/goal.ts";
 
 interface Args {
   tilemap: TiledResource;
@@ -55,6 +56,14 @@ export class LevelScene extends ex.Scene {
         pos: props.worldPos,
         facing: "right",
         color: ex.Color.Green,
+      });
+    },
+    Goal: function (props): ex.Actor {
+      const unlocked = props.object?.properties.get("unlocked");
+
+      return new Goal({
+        pos: props.worldPos,
+        unlocked: typeof unlocked === "boolean" ? unlocked : false,
       });
     },
   };
