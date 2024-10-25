@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Small Asteroid" type="SmallAsteroid">
+  <properties>
+   <property name="color" value="00ff00"/>
+  </properties>
+  <point/>
+ </object>
+</template>

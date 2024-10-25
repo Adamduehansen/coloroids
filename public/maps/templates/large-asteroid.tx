@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Large Asteroid" type="LargeAsteroid">
+  <properties>
+   <property name="color" value="#ffff00"/>
+  </properties>
+  <point/>
+ </object>
+</template>

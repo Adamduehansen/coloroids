@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="82">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="85">
  <tileset firstgid="1" source="../tilesets/environment.tsx"/>
  <layer id="1" name="Walls" class="walls" width="50" height="40">
   <properties>
@@ -54,20 +54,20 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="Objects">
-  <object id="78" name="Small Asteroid" type="SmallAsteroid" x="320" y="160">
-   <properties>
-    <property name="color" value="00ff00"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="79" name="Large Asteroid" type="LargeAsteroid" x="320" y="480">
-   <properties>
-    <property name="color" value="#ffff00"/>
-   </properties>
-   <point/>
-  </object>
+  <object id="78" template="templates/small-asteroid.tx" type="SmallAsteroid" x="320" y="160"/>
+  <object id="79" template="templates/large-asteroid.tx" type="LargeAsteroid" x="320" y="480"/>
   <object id="81" name="Spaceship" type="Spaceship" x="160" y="320">
    <point/>
+  </object>
+  <object id="83" template="templates/large-asteroid.tx" x="480" y="320">
+   <properties>
+    <property name="color" value="#ff00ff"/>
+   </properties>
+  </object>
+  <object id="84" template="templates/small-asteroid.tx" x="480" y="160">
+   <properties>
+    <property name="color" value="0000ff"/>
+   </properties>
   </object>
  </objectgroup>
 </map>
