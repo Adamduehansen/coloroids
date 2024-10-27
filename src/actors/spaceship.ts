@@ -10,6 +10,7 @@ import {
 import { PaletteComponent } from "../components/palette.ts";
 import { AnimationComponent } from "../components/animation.ts";
 import { Resources } from "../utils/resources.ts";
+import { Goal } from "./goal.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
@@ -183,6 +184,10 @@ export class Spaceship extends ex.Actor {
     contact: ex.CollisionContact,
   ): void {
     super.onCollisionStart(self, other, side, contact);
+
+    if (other.owner instanceof Goal) {
+      console.log("LEVEL COMPLETED!");
+    }
 
     this.kill();
   }

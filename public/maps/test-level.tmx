@@ -56,9 +56,7 @@
  <objectgroup id="5" name="Objects">
   <object id="78" template="templates/small-asteroid.tx" type="SmallAsteroid" x="320" y="160"/>
   <object id="79" template="templates/large-asteroid.tx" type="LargeAsteroid" x="320" y="480"/>
-  <object id="81" name="Spaceship" type="Spaceship" x="160" y="320">
-   <point/>
-  </object>
+  <object id="81" template="templates/spaceship.tx" type="Spaceship" x="160" y="320"/>
   <object id="83" template="templates/large-asteroid.tx" x="480" y="320">
    <properties>
     <property name="color" value="#ff00ff"/>
@@ -69,11 +67,6 @@
     <property name="color" value="0000ff"/>
    </properties>
   </object>
-  <object id="85" name="Goal" type="Goal" x="320" y="320">
-   <properties>
-    <property name="unlocked" type="bool" value="true"/>
-   </properties>
-   <point/>
-  </object>
+  <object id="85" template="templates/goal.tx" type="Goal" x="320" y="320"/>
  </objectgroup>
 </map>
