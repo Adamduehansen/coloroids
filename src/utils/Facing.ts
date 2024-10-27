@@ -10,3 +10,18 @@ const Facing: Record<Facing, number> = {
 export function adaptToRotation(facing: keyof typeof Facing): number | never {
   return Facing[facing] * Math.PI / 180;
 }
+
+export function convertToFacing(str: string): Facing | null {
+  switch (str) {
+    case "up":
+      return "up";
+    case "right":
+      return "right";
+    case "down":
+      return "down";
+    case "left":
+      return "left";
+    default:
+      return null;
+  }
+}

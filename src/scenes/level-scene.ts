@@ -4,6 +4,7 @@ import { SmallAsteroid } from "../actors/small-asteroid.ts";
 import { LargeAsteroid } from "../actors/large-asteroid.ts";
 import { Spaceship } from "../actors/spaceship.ts";
 import { Goal } from "../actors/goal.ts";
+import { convertToFacing } from "../utils/facing.ts";
 
 interface Args {
   tilemap: TiledResource;
@@ -52,9 +53,12 @@ export class LevelScene extends ex.Scene {
       });
     },
     Spaceship: function (props): ex.Actor {
+      const facingProp = props.object?.properties.get("facing");
+      const facing = typeof facingProp === "string" ? facingProp : "";
+
       return new Spaceship({
         pos: props.worldPos,
-        facing: "right",
+        facing: convertToFacing(facing) ?? "right",
         color: ex.Color.Green,
       });
     },
