@@ -2,6 +2,7 @@
 <template>
  <object name="Spaceship" type="Spaceship">
   <properties>
+   <property name="disableCanon" type="bool" value="false"/>
    <property name="facing" value="down"/>
   </properties>
   <point/>

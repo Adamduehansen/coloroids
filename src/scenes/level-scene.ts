@@ -54,12 +54,18 @@ export class LevelScene extends ex.Scene {
     },
     Spaceship: function (props): ex.Actor {
       const facingProp = props.object?.properties.get("facing");
+      const disableCanonProp = props.object?.properties.get("disablecanon");
+
       const facing = typeof facingProp === "string" ? facingProp : "";
+      const disableCanon = typeof disableCanonProp === "boolean"
+        ? disableCanonProp
+        : false;
 
       return new Spaceship({
         pos: props.worldPos,
         facing: convertToFacing(facing) ?? "right",
         color: ex.Color.Green,
+        disableCanon: disableCanon,
       });
     },
     Goal: function (props): ex.Actor {

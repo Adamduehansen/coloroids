@@ -19,6 +19,7 @@ const MAX_SPEED = 200;
 type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
   color: ex.Color;
+  disableCanon: boolean;
 };
 
 const playersCanCollideWith = ex.CollisionGroup.collidesWith([
@@ -67,12 +68,13 @@ export class Spaceship extends ex.Actor {
     }),
   });
   readonly canonColor: ex.Actor;
+  readonly #canShoot: boolean;
 
   speed = 0;
   #isThrusting = false;
   #isRetracting = false;
 
-  constructor({ color, ...rest }: Args) {
+  constructor({ color, disableCanon, ...rest }: Args) {
     super({
       ...rest,
       width: 16,
@@ -83,21 +85,23 @@ export class Spaceship extends ex.Actor {
       collisionGroup: playersCanCollideWith,
     });
 
+    this.#canShoot = disableCanon === false;
+
     this.body.mass = 0.5;
-
     this.palette = new PaletteComponent(color, true);
-
-    this.addComponent(this.controls);
-    this.addComponent(this.canon);
-    this.addComponent(this.palette);
-    this.addComponent(this.animations);
-
     this.canonColor = new ex.Actor({
       width: 8,
       height: 2,
       color: color,
       collisionType: ex.CollisionType.PreventCollision,
-    }), this.addChild(this.canonColor);
+      visible: this.#canShoot,
+    });
+
+    this.addChild(this.canonColor);
+    this.addComponent(this.controls);
+    this.addComponent(this.canon);
+    this.addComponent(this.palette);
+    this.addComponent(this.animations);
 
     this.animations.set("idle");
 
@@ -150,7 +154,7 @@ export class Spaceship extends ex.Actor {
       this.#isRetracting = false;
     }
 
-    if (this.controls.isHeld("fire")) {
+    if (this.#canShoot && this.controls.isHeld("fire")) {
       this.canon.attemptFire();
     }
 

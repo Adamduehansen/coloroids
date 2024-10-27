@@ -56,7 +56,12 @@
  <objectgroup id="5" name="Objects">
   <object id="78" template="templates/small-asteroid.tx" type="SmallAsteroid" x="320" y="160"/>
   <object id="79" template="templates/large-asteroid.tx" type="LargeAsteroid" x="320" y="480"/>
-  <object id="81" template="templates/spaceship.tx" type="Spaceship" x="160" y="320"/>
+  <object id="81" template="templates/spaceship.tx" type="Spaceship" x="160" y="320">
+   <properties>
+    <property name="disableCanon" type="bool" value="false"/>
+    <property name="facing" value="right"/>
+   </properties>
+  </object>
   <object id="83" template="templates/large-asteroid.tx" x="480" y="320">
    <properties>
     <property name="color" value="#ff00ff"/>
