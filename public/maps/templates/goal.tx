@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Goal" type="Goal">
+  <properties>
+   <property name="unlocked" type="bool" value="true"/>
+  </properties>
+  <point/>
+ </object>
+</template>
