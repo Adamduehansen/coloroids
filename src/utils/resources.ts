@@ -8,6 +8,7 @@ export const Resources = {
   tiled: {
     testMap: new TiledResource("/maps/test-level.tmx"),
     level1: new TiledResource("/maps/level-1.tmx"),
+    level2: new TiledResource("/maps/level-2.tmx"),
   },
 } as const;
 

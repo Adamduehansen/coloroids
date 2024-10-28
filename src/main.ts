@@ -2,6 +2,7 @@ import * as ex from "excalibur";
 import { loader } from "./utils/resources.ts";
 import { TestLevel } from "./scenes/test-level.ts";
 import { Level1 } from "./scenes/level-1.ts";
+import { Level2 } from "./scenes/level-2.ts";
 
 const engine = new ex.Engine({
   width: 800,
@@ -18,9 +19,11 @@ const engine = new ex.Engine({
 
 const testLevel = new TestLevel();
 const level1 = new Level1();
+const level2 = new Level2();
 
 engine.addScene("test-level", testLevel);
 engine.addScene("level-1", level1);
+engine.addScene("level-2", level2);
 
 await engine.start(loader);
-engine.goToScene("level-1");
+engine.goToScene("level-2");
