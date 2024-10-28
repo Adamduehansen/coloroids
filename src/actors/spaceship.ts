@@ -190,7 +190,7 @@ export class Spaceship extends ex.Actor {
     super.onCollisionStart(self, other, side, contact);
 
     if (other.owner instanceof Goal) {
-      console.log("LEVEL COMPLETED!");
+      this.scene?.engine.emit("level-transition");
     }
 
     this.kill();
