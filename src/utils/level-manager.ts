@@ -3,29 +3,26 @@ import * as ex from "excalibur";
 type LevelKey = `level-${number}`;
 
 export class LevelManager {
-  #engine: ex.Engine;
-  #currentLevelKey: LevelKey;
+  readonly #engine: ex.Engine;
+
+  #currentLevelIndex: number;
 
   constructor(engine: ex.Engine) {
     this.#engine = engine;
-
-    this.#currentLevelKey = "level-1";
+    this.#currentLevelIndex = 1;
 
     this.#engine.on("level-transition", this.#goToNextLevel.bind(this));
   }
 
-  get getCurrentLevel(): string {
-    return this.#currentLevelKey;
-  }
-
-  #getNextLevel(): LevelKey {
-    return "level-2";
+  get getCurrentLevel(): LevelKey {
+    return `level-${this.#currentLevelIndex}`;
   }
 
   #goToNextLevel(): void {
-    const nextLevel = this.#getNextLevel();
-    ex.Logger.getInstance().info("Transition to", nextLevel);
-    this.#engine.goToScene(nextLevel, {
+    this.#currentLevelIndex += 1;
+    const levelKey: LevelKey = `level-${this.#currentLevelIndex}`;
+    ex.Logger.getInstance().info(`Transition to "${levelKey}"`);
+    this.#engine.goToScene(levelKey, {
       destinationIn: new ex.FadeInOut({
         duration: 500,
         direction: "in",
