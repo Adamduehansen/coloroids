@@ -20,6 +20,7 @@ type Args = Pick<ex.ActorArgs, "pos"> & {
   facing: Facing;
   color: ex.Color;
   disableCanon: boolean;
+  canCombineColors: boolean;
 };
 
 const playersCanCollideWith = ex.CollisionGroup.collidesWith([
@@ -74,7 +75,7 @@ export class Spaceship extends ex.Actor {
   #isThrusting = false;
   #isRetracting = false;
 
-  constructor({ color, disableCanon, ...rest }: Args) {
+  constructor({ color, disableCanon, canCombineColors, ...rest }: Args) {
     super({
       ...rest,
       width: 16,
@@ -88,7 +89,7 @@ export class Spaceship extends ex.Actor {
     this.#canShoot = disableCanon === false;
 
     this.body.mass = 0.5;
-    this.palette = new PaletteComponent(color, true);
+    this.palette = new PaletteComponent(color, canCombineColors);
     this.canonColor = new ex.Actor({
       width: 8,
       height: 2,

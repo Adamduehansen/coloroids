@@ -2,6 +2,7 @@
 <template>
  <object name="Spaceship" type="Spaceship">
   <properties>
+   <property name="canCombineColors" type="bool" value="true"/>
    <property name="disableCanon" type="bool" value="false"/>
    <property name="facing" value="down"/>
   </properties>

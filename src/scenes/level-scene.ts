@@ -55,10 +55,16 @@ export class LevelScene extends ex.Scene {
     Spaceship: function (props): ex.Actor {
       const facingProp = props.object?.properties.get("facing");
       const disableCanonProp = props.object?.properties.get("disablecanon");
+      const canCombineColorsProp = props.object?.properties.get(
+        "canCombineColors",
+      );
 
       const facing = typeof facingProp === "string" ? facingProp : "";
       const disableCanon = typeof disableCanonProp === "boolean"
         ? disableCanonProp
+        : false;
+      const canCombineColors = typeof canCombineColorsProp === "boolean"
+        ? canCombineColorsProp
         : false;
 
       return new Spaceship({
@@ -66,6 +72,7 @@ export class LevelScene extends ex.Scene {
         facing: convertToFacing(facing) ?? "right",
         color: ex.Color.Green,
         disableCanon: disableCanon,
+        canCombineColors: canCombineColors,
       });
     },
     Goal: function (props): ex.Actor {
