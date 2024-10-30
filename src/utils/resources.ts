@@ -10,6 +10,7 @@ export const Resources = {
     level1: new TiledResource("/maps/level-1.tmx"),
     level2: new TiledResource("/maps/level-2.tmx"),
     level3: new TiledResource("/maps/level-3.tmx"),
+    level4: new TiledResource("/maps/level-4.tmx"),
   },
 } as const;
 
