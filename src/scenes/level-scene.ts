@@ -5,6 +5,7 @@ import { LargeAsteroid } from "../actors/large-asteroid.ts";
 import { Spaceship } from "../actors/spaceship.ts";
 import { Goal } from "../actors/goal.ts";
 import { convertToFacing } from "../utils/facing.ts";
+import { random } from "../utils/random.ts";
 
 interface Args {
   tilemap: TiledResource;
@@ -32,8 +33,8 @@ export class LevelScene extends ex.Scene {
 
       return new SmallAsteroid({
         vel: ex.vec(
-          ex.randomIntInRange(-50, 50),
-          ex.randomIntInRange(-50, 50),
+          ex.randomIntInRange(-50, 50, random),
+          ex.randomIntInRange(-50, 50, random),
         ),
         color: ex.Color.fromHex(color),
         pos: props.worldPos,
@@ -45,8 +46,8 @@ export class LevelScene extends ex.Scene {
 
       return new LargeAsteroid({
         vel: ex.vec(
-          ex.randomIntInRange(-50, 50),
-          ex.randomIntInRange(-50, 50),
+          ex.randomIntInRange(-50, 50, random),
+          ex.randomIntInRange(-50, 50, random),
         ),
         color: ex.Color.fromHex(color),
         pos: props.worldPos,
