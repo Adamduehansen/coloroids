@@ -54,9 +54,11 @@
 Lets get you familier with your vessel.
 Press &quot;W&quot; to thrust...</text>
   </object>
-  <object id="4" type="Text" x="64" y="464" width="80.2344" height="18.8438">
-   <text wrap="1">Press &quot;A&quot; and &quot;D&quot; to rotate
-the vessel...</text>
+  <object id="4" type="Text" x="48" y="592" width="80.2344" height="18.8438">
+   <text wrap="1">Press &quot;A&quot; and &quot;D&quot; to rotate the vessel...</text>
+  </object>
+  <object id="5" type="Text" x="51.9662" y="301.36" width="80.2344" height="18.8438">
+   <text wrap="1">Press &quot;S&quot; to restrain the vessel...</text>
   </object>
  </objectgroup>
  <objectgroup id="2" name="Objects">
