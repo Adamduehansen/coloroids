@@ -192,8 +192,11 @@ export class Spaceship extends ex.Actor {
 
     if (other.owner instanceof Goal) {
       this.scene?.engine.emit("level-transition");
+      this.vel = ex.Vector.Zero;
+      return;
     }
 
     this.kill();
+    this.scene?.engine.emit("death");
   }
 }

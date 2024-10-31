@@ -6,6 +6,7 @@ import { Spaceship } from "../actors/spaceship.ts";
 import { Goal } from "../actors/goal.ts";
 import { convertToFacing } from "../utils/facing.ts";
 import { random } from "../utils/random.ts";
+import { DeathOverlay } from "../hud/death-overlay.ts";
 
 interface Args {
   tilemap: TiledResource;
@@ -99,6 +100,7 @@ export class LevelScene extends ex.Scene {
     super.onInitialize(engine);
     this.#tilemap.addToScene(this);
     this.#setupCamera();
+    this.add(new DeathOverlay(engine));
   }
 
   #isSpaceship(entity: ex.Entity): entity is Spaceship {
