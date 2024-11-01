@@ -13,7 +13,7 @@ interface Args {
 }
 
 export class LevelScene extends ex.Scene {
-  #tilemap: TiledResource;
+  readonly tilemap: TiledResource;
 
   #entityFactory: Record<string, (props: FactoryProps) => ex.Actor> = {
     Text: function (props) {
@@ -89,16 +89,16 @@ export class LevelScene extends ex.Scene {
 
   constructor({ tilemap }: Args) {
     super();
-    this.#tilemap = tilemap;
+    this.tilemap = tilemap;
 
     for (const [className, factory] of Object.entries(this.#entityFactory)) {
-      this.#tilemap.registerEntityFactory(className, factory);
+      this.tilemap.registerEntityFactory(className, factory);
     }
   }
 
   override onInitialize(engine: ex.Engine): void {
     super.onInitialize(engine);
-    this.#tilemap.addToScene(this);
+    this.tilemap.addToScene(this);
     this.#setupCamera();
     this.add(new DeathOverlay(engine));
   }
