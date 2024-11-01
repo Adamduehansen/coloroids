@@ -58,7 +58,7 @@ export class LevelScene extends ex.Scene {
       const facingProp = props.object?.properties.get("facing");
       const disableCanonProp = props.object?.properties.get("disablecanon");
       const canCombineColorsProp = props.object?.properties.get(
-        "canCombineColors",
+        "cancombinecolors",
       );
 
       const facing = typeof facingProp === "string" ? facingProp : "";
