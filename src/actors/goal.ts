@@ -1,5 +1,6 @@
 import * as ex from "excalibur";
 import { GoalCollisionGroup } from "../utils/collision-groups.ts";
+import { LevelEndComponent } from "../components/level-end.ts";
 
 interface Args {
   pos: ex.ActorArgs["pos"];
@@ -25,6 +26,7 @@ export class Goal extends ex.Actor {
     });
 
     this.addChild(this.#label);
+    this.addComponent(new LevelEndComponent("next-level"));
 
     if (args.unlocked) {
       this.unlock();

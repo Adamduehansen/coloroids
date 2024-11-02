@@ -22,6 +22,7 @@ export class LevelManager {
     this.#engine = engine;
 
     this.#engine.on("level-transition", this.#goToNextLevel.bind(this));
+    this.#engine.on("level-restart", this.#restartLevelCounter.bind(this));
   }
 
   get getCurrentLevel(): LevelKey {
@@ -31,6 +32,25 @@ export class LevelManager {
   #goToNextLevel(): void {
     this.#proxyLevelIndex.levelIndex += 1;
     const levelKey: LevelKey = `level-${this.#proxyLevelIndex.levelIndex}`;
+    this.#transitToNewLevel(levelKey);
+  }
+
+  #restartLevelCounter(): void {
+    this.#proxyLevelIndex.levelIndex = 1;
+    const levelKey: LevelKey = `level-${this.#proxyLevelIndex.levelIndex}`;
+    this.#transitToNewLevel(levelKey);
+  }
+
+  #getLevelIndexInStorage(): number {
+    const index = localStorage.getItem(LEVEL_INDEX_STORAGE_KEY);
+    if (index === null) {
+      return 1;
+    } else {
+      return Number(index);
+    }
+  }
+
+  #transitToNewLevel(levelKey: LevelKey): void {
     this.#engine.goToScene(levelKey, {
       destinationIn: new ex.FadeInOut({
         duration: 500,
@@ -43,14 +63,5 @@ export class LevelManager {
         color: ex.Color.Black,
       }),
     });
-  }
-
-  #getLevelIndexInStorage(): number {
-    const index = localStorage.getItem(LEVEL_INDEX_STORAGE_KEY);
-    if (index === null) {
-      return 1;
-    } else {
-      return Number(index);
-    }
   }
 }

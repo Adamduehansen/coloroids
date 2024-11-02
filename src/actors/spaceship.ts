@@ -10,7 +10,7 @@ import {
 import { PaletteComponent } from "../components/palette.ts";
 import { AnimationComponent } from "../components/animation.ts";
 import { Resources } from "../utils/resources.ts";
-import { Goal } from "./goal.ts";
+import { LevelEndComponent, LevelEndType } from "../components/level-end.ts";
 
 const ROTATE_SPEED = .05;
 const RELOAD_TIME = 500;
@@ -182,6 +182,17 @@ export class Spaceship extends ex.Actor {
     }
   }
 
+  #getLevelEndEvent(levelType: LevelEndType): string {
+    switch (levelType) {
+      case "next-level":
+        return "level-transition";
+      case "reset-levels":
+        return "level-restart";
+      default:
+        throw new Error("Unhandled level end event");
+    }
+  }
+
   override onCollisionStart(
     self: ex.Collider,
     other: ex.Collider,
@@ -190,9 +201,11 @@ export class Spaceship extends ex.Actor {
   ): void {
     super.onCollisionStart(self, other, side, contact);
 
-    if (other.owner instanceof Goal) {
-      this.scene?.engine.emit("level-transition");
+    if (other.owner.has(LevelEndComponent)) {
+      const levelEnd = other.owner.get(LevelEndComponent);
       this.vel = ex.Vector.Zero;
+      const levelEndEvent = this.#getLevelEndEvent(levelEnd.type);
+      this.scene?.engine.emit(levelEndEvent);
       return;
     }
 
