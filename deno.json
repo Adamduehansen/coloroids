@@ -14,5 +14,10 @@
       "deno.window",
       "DOM"
     ]
+  },
+  "lint": {
+    "exclude": [
+      "dist"
+    ]
   }
 }
