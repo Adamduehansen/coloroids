@@ -9,13 +9,16 @@ export class DeathOverlay extends ex.ScreenElement {
 
     engine.on("death", () => {
       this.graphics.visible = true;
+      this.actions.delay(1000).callMethod(() => {
+        location.reload();
+      });
     });
   }
 
   override onInitialize(engine: ex.Engine): void {
     super.onInitialize(engine);
     const text = new ex.Text({
-      text: "You died! Refresh the page...",
+      text: "You died!",
       color: ex.Color.Red,
     });
 
