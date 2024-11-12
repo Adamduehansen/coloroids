@@ -11,7 +11,7 @@ Sprint 1 (october 2024):
   ✔ Death screen @done(24-11-01 06:59)
   ✔ Level unlock @done(24-10-30 22:41)
   ✔ 6 levels @done(24-11-01 07:48)
-  ☐ Replay levels
+  ✔ Replay levels @done(24-11-12 07:18)
 
 Backlog:
   ☐ Enemy
@@ -20,9 +20,18 @@ Backlog:
   ☐ Camera lock to level corners
   ☐ More levels.
   ☐ moveable obstacles
+  ☐ Menu scene
+    ☐ Level selection
+    ☐ Settings?
 
 Mechanic ideas:
   ☐ Use other asteroids to destroy something by pushing them around.
+
+Feedback
+Game is hard. Controlling is hard.
+Could more levels make the player more comfortable with the controls?
+Should restrain be removed or never introduced?
+
 
 Archive:
   ✔ Asteroid @done(24-10-13 21:17) @project(Objects)
