@@ -11,6 +11,11 @@ The classic Asteroids game but with colors!
 
 Just like the classic Asteroids game you need to shoot the asteroids to make
 them dissapear. This game adds another layer to the game by having the asteroids
-be protected by a shield of a specific color. You need to match the color of the asteroid to be able to shoot
-them. Additionally enemies and other mechanics will try to make the job more
-difficult!
+be protected by a shield of a specific color. You need to match the color of the
+asteroid to be able to shoot them. Additionally enemies and other mechanics will
+try to make the job more difficult!
+
+# Feedback
+
+- On first level, make the rocket point up - its the same way that the rocket
+  points!
